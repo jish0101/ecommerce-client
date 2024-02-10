@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import SuspenseWrapper from './Components/Layout/SuspenseWrapper.jsx';
 import Layout from './Components/Layout/Layout.jsx';
 import { ACCOUNT_TYPES } from './Lib/Constants.js';
+import SignIn from './Components/Login/SignIn.jsx';
 // import {
 //   Button,
 //   Group,
@@ -16,8 +17,8 @@ const Home = lazy(() => import('./Pages/home/Home.jsx'));
 const NotFound = lazy(() => import('./Components/Layout/NotFound.jsx'));
 const UnAuthorized = lazy(() => import('./Components/Layout/UnAuthorized.jsx'));
 const PrivateRoute = lazy(() => import('./Store/reducers/Auth/PrivateRoute.jsx'));
-const Login = lazy(() => import('./Components/Login/Login.jsx'));
-
+const SignUp = lazy(() => import('./Components/Login/SignUp.jsx'));
+// const SignIn = lazy(() => import('./Components/Login/SignIn.jsx'));
 function App() {
   // const { setColorScheme, clearColorScheme } = useMantineColorScheme({
   //   keepTransitions: true,
@@ -37,8 +38,9 @@ function App() {
 
       <Route element={<SuspenseWrapper />}>
         <Route path="/unauthorized" element={<UnAuthorized />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/signUp" element={<SignUp />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/signin" element={<SignIn />} />
       </Route>
     </Routes>
   );

@@ -1,7 +1,11 @@
 import React from 'react';
-
-const Loader = () => {
-  return <div>Loading..</div>;
+import { Loader } from '@mantine/core';
+const loader = () => {
+  return (
+    <div>
+      <Loader color="gray" />;
+    </div>
+  );
 };
 
-export default Loader;
+export default loader;
