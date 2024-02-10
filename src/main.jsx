@@ -12,7 +12,7 @@ import { store } from './Store/store';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <MantineProvider
-      defaultColorScheme="dark"
+      defaultColorScheme="light"
       theme={theme}
       colorSchemeManager={colorSchemeManager}>
       <BrowserRouter>
