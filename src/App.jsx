@@ -1,9 +1,9 @@
 import React, { lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import SuspenseWrapper from './Components/Layout/SuspenseWrapper.jsx';
-import Layout from './Components/Layout/Layout.jsx';
-import { ACCOUNT_TYPES } from './Lib/Constants.js';
-import SignIn from './Components/Login/SignIn.jsx';
+import SuspenseWrapper from './Components/Layout/SuspenseWrapper';
+import Layout from './Components/Layout/Layout';
+import { ACCOUNT_TYPES } from './Lib/Constants';
+import SignIn from './Components/Login/SignIn';
 // import {
 //   Button,
 //   Group,
@@ -13,11 +13,11 @@ import SignIn from './Components/Login/SignIn.jsx';
 //   useMantineColorScheme,
 // } from "@mantine/core";
 
-const Home = lazy(() => import('./Pages/home/Home.jsx'));
-const NotFound = lazy(() => import('./Components/Layout/NotFound.jsx'));
-const UnAuthorized = lazy(() => import('./Components/Layout/UnAuthorized.jsx'));
-const PrivateRoute = lazy(() => import('./Store/reducers/Auth/PrivateRoute.jsx'));
-const SignUp = lazy(() => import('./Components/Login/SignUp.jsx'));
+const Home = lazy(() => import('./Pages/home/Home'));
+const NotFound = lazy(() => import('./Components/Layout/NotFound'));
+const UnAuthorized = lazy(() => import('./Components/Layout/UnAuthorized'));
+const PrivateRoute = lazy(() => import('./Store/reducers/Auth/PrivateRoute'));
+const SignUp = lazy(() => import('./Components/Login/SignUp'));
 // const SignIn = lazy(() => import('./Components/Login/SignIn.jsx'));
 function App() {
   // const { setColorScheme, clearColorScheme } = useMantineColorScheme({
