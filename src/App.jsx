@@ -38,7 +38,7 @@ function App() {
 
       <Route element={<SuspenseWrapper />}>
         <Route path="/unauthorized" element={<UnAuthorized />} />
-        <Route path="/signUp" element={<SignUp />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/signin" element={<SignIn />} />
       </Route>

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { MantineProvider } from '@mantine/core';
+import { Button, MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import './index.css';
 import { Provider } from 'react-redux';
@@ -14,10 +14,12 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <MantineProvider
       defaultColorScheme="light"
       theme={theme}
-      colorSchemeManager={colorSchemeManager}>
+      colorSchemeManager={colorSchemeManager}
+    >
       <BrowserRouter>
         <Provider store={store}>
-          <App />
+          <Button variant="outline">hello</Button>
+          {/* <App /> */}
         </Provider>
       </BrowserRouter>
     </MantineProvider>
