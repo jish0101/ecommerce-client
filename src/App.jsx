@@ -4,26 +4,13 @@ import SuspenseWrapper from './Components/Layout/SuspenseWrapper';
 import Layout from './Components/Layout/Layout';
 import { ACCOUNT_TYPES } from './Lib/Constants';
 import SignIn from './Components/Login/SignIn';
-// import {
-//   Button,
-//   Group,
-//   Loader,
-//   Paper,
-//   Text,
-//   useMantineColorScheme,
-// } from "@mantine/core";
 
 const Home = lazy(() => import('./Pages/home/Home'));
 const NotFound = lazy(() => import('./Components/Layout/NotFound'));
 const UnAuthorized = lazy(() => import('./Components/Layout/UnAuthorized'));
 const PrivateRoute = lazy(() => import('./Store/reducers/Auth/PrivateRoute'));
 const SignUp = lazy(() => import('./Components/Login/SignUp'));
-// const SignIn = lazy(() => import('./Components/Login/SignIn.jsx'));
 function App() {
-  // const { setColorScheme, clearColorScheme } = useMantineColorScheme({
-  //   keepTransitions: true,
-  // });
-
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
