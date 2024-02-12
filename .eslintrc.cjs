@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: ['airbnb', 'plugin:react/recommended'],
+  extends: ['airbnb', 'plugin:react/recommended', 'plugin:prettier/recommended'],
   overrides: [
     {
       env: {
@@ -19,8 +19,14 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['react'],
+  plugins: ['react', 'prettier'],
   rules: {
     'linebreak-style': 'off',
+    'prettier/prettier': [
+      'error',
+      {
+        'object-curly-newline': false,
+      },
+    ],
   },
 };
