@@ -1,8 +1,11 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../Store/reducers/Auth/authSelector';
+import { logout } from '../../Store/reducers/Auth/authSlice';
+import { Button } from '@mantine/core';
 
 const Home = () => {
+  const dispatch = useDispatch();
   const user = useSelector(selectUser);
   return (
     <div className="grid max-w-[80%] mx-auto p-3 gap-2 my-12">
@@ -10,6 +13,9 @@ const Home = () => {
       <p>Email: {user.email}</p>
       <p>Role: {user.role}</p>
       <p className="break-all">Token: {user.token}</p>
+      <Button variant="outline" onClick={() => dispatch(logout())}>
+        Logout
+      </Button>
     </div>
   );
 };

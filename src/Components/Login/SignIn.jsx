@@ -6,10 +6,11 @@ import { notifications } from '@mantine/notifications';
 import { logoDark } from '../../Assets/index';
 import { selectIsAuth } from '../../Store/reducers/Auth/authSelector';
 import { useDispatch, useSelector } from 'react-redux';
-import '@mantine/notifications/styles.css';
 import { API_KEYS, API_URL, usePostFetch } from '../../Api/api';
 import { authKey, signin } from '../../Store/reducers/Auth/authSlice';
+import { Check } from 'lucide-react';
 import useRefreshToken from '../../Hooks/useRefreshToken';
+import '@mantine/notifications/styles.css';
 
 function SignIn() {
   const location = useLocation();
@@ -46,13 +47,24 @@ function SignIn() {
           title: <h4 className="font-bold text-lg">Welcome</h4>,
           message: <p className="text-base">{message}</p>,
           color: 'yellow',
+          icon: <Check size={40} className="p-1" key={'login'} />,
+          className: 'text-yellow-600',
+          loading: false,
+        });
+        dispatch(signin(userData));
+      } else {
+        notifications.show({
+          id: 'login',
+          withCloseButton: true,
+          autoClose: 2000,
+          title: <h4 className="font-bold text-lg">Oops!</h4>,
+          message: <p className="text-base">{message}</p>,
+          color: 'red',
           icon: <CheckIcon className="p-2" key={'login'} />,
           className: 'text-yellow-600',
           loading: false,
         });
       }
-      dispatch(signin(userData));
-      console.log(userData);
     } catch (error) {
       console.error(error);
     }

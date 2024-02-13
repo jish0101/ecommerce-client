@@ -6,8 +6,6 @@ import { selectIsAuth, selectRole } from './authSelector';
 // eslint-disable-next-line react/prop-types
 function PrivateRoute({ roles }) {
   const role = useSelector(selectRole);
-  console.log('🚀 ~ PrivateRoute ~ roles:', roles);
-  console.log('🚀 ~ PrivateRoute ~ role:', role);
   const isAuthenticatedRedux = useSelector(selectIsAuth);
   const location = useLocation();
 
