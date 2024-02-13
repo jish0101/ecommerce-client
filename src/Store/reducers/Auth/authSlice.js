@@ -1,26 +1,37 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+export const authKey = 'cloneAppUserId';
+
+const initialState = {
+  isAuthenticated: false,
+  user: {},
+};
+
 const authSlice = createSlice({
   name: 'auth',
-  initialState: {
-    isAuthenticated: false,
-    user: {}
-  },
+  initialState,
   reducers: {
-    signup: (state, action) => {
+    signin: (state, action) => {
+      localStorage.setItem(
+        authKey,
+        JSON.stringify({
+          id: action.payload.id,
+        }),
+      );
       state.isAuthenticated = true;
       state.user = action.payload;
     },
     logout: (state) => {
       try {
-        state.isAuthenticated = false;
-        state.user = null;
+        localStorage.removeItem(authKey);
+        state.isAuthenticated = initialState.isAuthenticated;
+        state.user = initialState.user;
       } catch (err) {
         console.log(err?.message);
       }
-    }
-  }
+    },
+  },
 });
 
-export const { signup, logout } = authSlice.actions;
+export const { signin, logout } = authSlice.actions;
 export default authSlice.reducer;

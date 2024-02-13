@@ -1,29 +1,16 @@
 import React, { lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import SuspenseWrapper from './Components/Layout/SuspenseWrapper.jsx';
-import Layout from './Components/Layout/Layout.jsx';
-import { ACCOUNT_TYPES } from './Lib/Constants.js';
-import SignIn from './Components/Login/SignIn.jsx';
-// import {
-//   Button,
-//   Group,
-//   Loader,
-//   Paper,
-//   Text,
-//   useMantineColorScheme,
-// } from "@mantine/core";
+import SuspenseWrapper from './Components/Layout/SuspenseWrapper';
+import Layout from './Components/Layout/Layout';
+import { ACCOUNT_TYPES } from './Lib/Constants';
+import SignIn from './Components/Login/SignIn';
 
-const Home = lazy(() => import('./Pages/home/Home.jsx'));
-const NotFound = lazy(() => import('./Components/Layout/NotFound.jsx'));
-const UnAuthorized = lazy(() => import('./Components/Layout/UnAuthorized.jsx'));
-const PrivateRoute = lazy(() => import('./Store/reducers/Auth/PrivateRoute.jsx'));
-const SignUp = lazy(() => import('./Components/Login/SignUp.jsx'));
-// const SignIn = lazy(() => import('./Components/Login/SignIn.jsx'));
+const Home = lazy(() => import('./Pages/home/Home'));
+const NotFound = lazy(() => import('./Components/Layout/NotFound'));
+const UnAuthorized = lazy(() => import('./Components/Layout/UnAuthorized'));
+const PrivateRoute = lazy(() => import('./Store/reducers/Auth/PrivateRoute'));
+const Signup = lazy(() => import('./Components/Signup/Signup'));
 function App() {
-  // const { setColorScheme, clearColorScheme } = useMantineColorScheme({
-  //   keepTransitions: true,
-  // });
-
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
@@ -38,9 +25,9 @@ function App() {
 
       <Route element={<SuspenseWrapper />}>
         <Route path="/unauthorized" element={<UnAuthorized />} />
-        <Route path="/signUp" element={<SignUp />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<SignIn />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   );
