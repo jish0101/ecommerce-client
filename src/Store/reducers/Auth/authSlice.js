@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+export const authKey = 'cloneAppUserId';
+
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
@@ -8,6 +10,12 @@ const authSlice = createSlice({
   },
   reducers: {
     signin: (state, action) => {
+      localStorage.setItem(
+        authKey,
+        JSON.stringify({
+          id: action.payload.id,
+        }),
+      );
       state.isAuthenticated = true;
       state.user = action.payload;
     },

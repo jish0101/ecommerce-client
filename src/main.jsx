@@ -10,6 +10,7 @@ import { colorSchemeManager, theme } from './Theme/themeConfig';
 import App from './App';
 import { store } from './Store/store';
 import { Notifications } from '@mantine/notifications';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient();
 
@@ -21,9 +22,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         theme={theme}
         colorSchemeManager={colorSchemeManager}
       >
-        <Notifications />
         <BrowserRouter>
           <Provider store={store}>
+            <Notifications />
+            <ReactQueryDevtools initialIsOpen={false} />
             <App />
           </Provider>
         </BrowserRouter>
