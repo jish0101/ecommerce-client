@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { logoDark } from '../../Assets/index';
-import { useDispatch, useSelector } from 'react-redux';
-import { signup } from '../../Store/reducers/Auth/authSlice';
+import { useSelector } from 'react-redux';
+// import { signup } from '../../Store/reducers/Auth/authSlice';
 import { selectIsAuth } from '../../Store/reducers/Auth/authSelector';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -12,7 +12,7 @@ import * as yup from 'yup';
 
 // import { Button } from '@mantine/core';
 
-function SignUp() {
+function Signup() {
   const validationSchema = yup.object().shape({
     password: yup
       .string()
@@ -210,7 +210,7 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default Signup;
 
 {
   /* <div>

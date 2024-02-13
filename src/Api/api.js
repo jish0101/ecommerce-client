@@ -90,8 +90,7 @@ export const usePostFetch = ({ queryKey, url, token }) => {
     });
     return mutation;
   } catch (error) {
-    console.error(error);
-    return null;
+    return error;
   }
 };
 

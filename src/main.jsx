@@ -25,7 +25,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <BrowserRouter>
           <Provider store={store}>
             <Notifications />
-            <ReactQueryDevtools initialIsOpen={false} />
+            {/* <ReactQueryDevtools initialIsOpen={false} /> */}
             <App />
           </Provider>
         </BrowserRouter>

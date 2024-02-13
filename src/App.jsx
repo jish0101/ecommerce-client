@@ -9,7 +9,7 @@ const Home = lazy(() => import('./Pages/home/Home'));
 const NotFound = lazy(() => import('./Components/Layout/NotFound'));
 const UnAuthorized = lazy(() => import('./Components/Layout/UnAuthorized'));
 const PrivateRoute = lazy(() => import('./Store/reducers/Auth/PrivateRoute'));
-const SignUp = lazy(() => import('./Components/Login/SignUp'));
+const Signup = lazy(() => import('./Components/Signup/Signup'));
 function App() {
   return (
     <Routes>
@@ -25,7 +25,7 @@ function App() {
 
       <Route element={<SuspenseWrapper />}>
         <Route path="/unauthorized" element={<UnAuthorized />} />
-        <Route path="/signup" element={<SignUp />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="*" element={<NotFound />} />
       </Route>
