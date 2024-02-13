@@ -1,21 +1,57 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { DevTool } from '@hookform/devtools';
-import { Loader } from '@mantine/core';
+import { CheckIcon, Loader } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { logoDark } from '../../Assets/index';
+import { selectIsAuth } from '../../Store/reducers/Auth/authSelector';
+import { useDispatch, useSelector } from 'react-redux';
+import '@mantine/notifications/styles.css';
+import { API_KEYS, API_URL, usePostFetch } from '../../Api/api';
+import { signin } from '../../Store/reducers/Auth/authSlice';
 
 function SignIn() {
   const form = useForm();
   const {
     register,
-    control,
     handleSubmit,
     formState: { errors },
   } = form;
-  // const [userData, setUserData] = useState({});
-  // const isAuthenticatedRedux = useSelector(selectIsAuth);
-  const formSubmit = (data) => {};
+  const { mutateAsync: login, isLoading: isLoadingLogin } = usePostFetch({
+    queryKey: API_KEYS.login,
+    url: API_URL.login,
+  });
+  const dispatch = useDispatch();
+  const isAuthenticatedRedux = useSelector(selectIsAuth);
+  const location = useLocation();
+  const prevLocation = location.state?.from?.pathname || '/';
+  const navigate = useNavigate();
+
+  const formSubmit = async (body) => {
+    try {
+      const {
+        data: { status, message, data: userData },
+      } = await login({ body });
+
+      if (status) {
+        notifications.show({
+          id: 'login',
+          withCloseButton: true,
+          autoClose: 2000,
+          title: <h4 className="font-bold text-lg">Welcome</h4>,
+          message: <p className="text-base">{message}</p>,
+          color: 'yellow',
+          icon: <CheckIcon className="p-2" key={'login'} />,
+          className: 'text-yellow-600',
+          loading: false,
+        });
+      }
+      dispatch(signin(userData));
+      console.log(userData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const emailConfig = {
     pattern: {
@@ -35,6 +71,16 @@ function SignIn() {
       message: 'please enter the 6 digit password',
     },
   };
+
+  useEffect(() => {
+    try {
+      if (isAuthenticatedRedux) {
+        navigate(prevLocation, { replace: true });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [isAuthenticatedRedux]);
 
   return (
     <div className="w-full ">
@@ -85,7 +131,7 @@ function SignIn() {
                 type="submit"
                 className="w-full py-1.5 text-sm font-normal rounded-sm bg-gradient-to-t from-[#f7dfa5] to-[#f0c14b] hover:bg-gradient-to-b border border-zinc-400 active:border-yellow-800 active:shadow-amazonInput"
               >
-                continue
+                Continue
               </button>
               <div className="flex justify-center">
                 <Loader color="gray" />
@@ -130,8 +176,6 @@ function SignIn() {
         </div>
         <p className="text-xs text-gray-600">© 1996-2024, Amazon.com, Inc. or its affiliates</p>
       </div>
-
-      <DevTool control={control} />
     </div>
   );
 }

@@ -2,13 +2,12 @@ import React from 'react';
 import { Navigate, useLocation, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectIsAuth, selectRole } from './authSelector';
-import { BASE_URL } from '../../../Lib/GlobalExports';
-
-console.log('🚀 ~ BASE_URL:', BASE_URL);
 
 // eslint-disable-next-line react/prop-types
 function PrivateRoute({ roles }) {
   const role = useSelector(selectRole);
+  console.log('🚀 ~ PrivateRoute ~ roles:', roles);
+  console.log('🚀 ~ PrivateRoute ~ role:', role);
   const isAuthenticatedRedux = useSelector(selectIsAuth);
   const location = useLocation();
 
