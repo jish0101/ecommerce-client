@@ -3,11 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Loader from './Loader';
 
 function LoadingScreen() {
-  return (
-    <div className="flex js-centre items-center h-screen">
-      <Loader color="#ffffff" size={'large'} />
-    </div>
-  );
+  return <Loader color="#ffffff" size={'large'} />;
 }
 
 const Layout = () => {

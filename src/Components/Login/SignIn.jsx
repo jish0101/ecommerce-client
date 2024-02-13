@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { CheckIcon, Loader } from '@mantine/core';
@@ -16,6 +16,7 @@ function SignIn() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const refresh = useRefreshToken();
+  const [loading, setLoading] = useState(true);
   const isAuthenticatedRedux = useSelector(selectIsAuth);
   const prevLocation = location.state?.from?.pathname || '/';
 
@@ -77,9 +78,16 @@ function SignIn() {
   };
 
   useEffect(() => {
-    const auth = JSON.parse(localStorage.getItem(authKey));
-    if (auth && auth.id) {
-      refresh();
+    const isMounted = true;
+    try {
+      const auth = JSON.parse(localStorage.getItem(authKey));
+      if (auth && auth.id) {
+        refresh();
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      isMounted && setLoading(false);
     }
   }, []);
 
@@ -92,6 +100,14 @@ function SignIn() {
       console.log(error);
     }
   }, [isAuthenticatedRedux]);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col gap-2 justify-center items-center h-screen">
+        <Loader type="dots" size={'xl'} color="yellow" />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">

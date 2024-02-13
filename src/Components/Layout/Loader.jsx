@@ -3,7 +3,7 @@ import { Loader } from '@mantine/core';
 const loader = () => {
   return (
     <div className="w-full h-screen flex justify-center items-center">
-      <Loader color="yellow" size={30} />
+      <Loader type="dots" size={'xl'} color="yellow" />
     </div>
   );
 };
