@@ -9,12 +9,12 @@ export const api = axios.create({
 
 export const API_URL = {
   login: 'auth/login',
-  signup: 'auth/signup',
+  signup: 'user/',
 };
 
 export const API_KEYS = {
   login: 'auth/login',
-  signup: 'auth/signup',
+  signup: 'user/',
 };
 
 /**

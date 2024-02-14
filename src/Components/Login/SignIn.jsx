@@ -125,8 +125,8 @@ function SignIn() {
   }
 
   return (
-    <div className="w-full">
-      <div className="w-full my-4 shadow-md pb-10">
+    <div className="w-full my-10">
+      <div className="w-full shadow-md">
         <form
           className="w-[370px] mx-auto flex flex-col items-center"
           action="#"
@@ -211,7 +211,7 @@ function SignIn() {
           </div>
         </form>
       </div>
-      <div className="w-full flex flex-col gap-4 justify-center items-center py-4">
+      <div className="w-full flex flex-col gap-4 justify-center items-center my-4">
         <div className="flex items-center gap-6 justify-center">
           <p className="text-xs text-blue-600 hover:text-orange-600 hover:underline underline-offset-1 cursor-pointer duration-100 ">
             Conditions of Use
