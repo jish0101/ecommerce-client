@@ -4,6 +4,7 @@ import SuspenseWrapper from './Components/Layout/SuspenseWrapper';
 import Layout from './Components/Layout/Layout';
 import { ACCOUNT_TYPES } from './Lib/Constants';
 import SignIn from './Components/Login/SignIn';
+import { usePostForm } from './Api/api';
 
 const Home = lazy(() => import('./Pages/home/Home'));
 const NotFound = lazy(() => import('./Components/Layout/NotFound'));
