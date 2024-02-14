@@ -71,6 +71,7 @@ function Signup() {
       notifications.show({
         id: 'signup',
         withCloseButton: true,
+        withBorder: true,
         autoClose: 1500,
         title: <h4 className="font-bold text-lg">Oops!</h4>,
         message: <p className="text-base">{error?.data?.message}</p>,

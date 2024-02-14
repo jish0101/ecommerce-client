@@ -46,11 +46,11 @@ function SignIn() {
         notifications.show({
           id: 'login',
           withCloseButton: true,
-          withBorder: true,
           autoClose: 2000,
           title: <h4 className="font-bold text-lg">Welcome</h4>,
           message: <p className="text-base">{message}</p>,
           color: 'yellow',
+          withBorder: true,
           radius: 'lg',
           icon: <Check size={40} className="p-1" key={'login'} />,
           loading: false,
@@ -126,7 +126,7 @@ function SignIn() {
 
   return (
     <div className="w-full my-10">
-      <div className="w-full shadow-md">
+      <div className="w-full shadow-md pb-10">
         <form
           className="w-[370px] mx-auto flex flex-col items-center"
           action="#"
