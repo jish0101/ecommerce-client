@@ -14,15 +14,15 @@ import { Check, XCircle } from 'lucide-react';
 import { API_KEYS, API_URL, usePostForm } from '../../Api/api';
 
 function Signup() {
+  const isAuthenticatedRedux = useSelector(selectIsAuth);
+  const navigate = useNavigate();
   const { mutateAsync: signup, isLoading: isLoadingSignup } = usePostForm({
     queryKey: API_KEYS.signup,
     url: API_URL.signup,
   });
-  const isAuthenticatedRedux = useSelector(selectIsAuth);
-  const navigate = useNavigate();
   const validationSchema = yup.object().shape({
     name: yup.string().required('Name is required'),
-    email: yup.string().email().required('Email is required'),
+    email: yup.string().trim().email().required('Email is required'),
     password: yup
       .string()
       .required('Password is required')
@@ -67,16 +67,21 @@ function Signup() {
         return dispatch(signin(data));
       }
     } catch (err) {
-      const error = err.response.data;
+      const error = err?.response;
       notifications.show({
         id: 'signup',
         withCloseButton: true,
-        autoClose: 2000,
+        autoClose: 1500,
         title: <h4 className="font-bold text-lg">Oops!</h4>,
-        message: <p className="text-base">{error.message}</p>,
+        message: <p className="text-base">{error?.data?.message}</p>,
         color: 'red',
         icon: <XCircle size={50} key={'login'} />,
         loading: false,
+        onClose: () => {
+          if (error.status === 409) {
+            navigate('/signin');
+          }
+        },
       });
       console.error(error);
     }

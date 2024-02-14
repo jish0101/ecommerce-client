@@ -3,14 +3,13 @@ import { Routes, Route } from 'react-router-dom';
 import SuspenseWrapper from './Components/Layout/SuspenseWrapper';
 import Layout from './Components/Layout/Layout';
 import { ACCOUNT_TYPES } from './Lib/Constants';
-import SignIn from './Components/Login/SignIn';
-import { usePostForm } from './Api/api';
 
 const Home = lazy(() => import('./Pages/home/Home'));
 const NotFound = lazy(() => import('./Components/Layout/NotFound'));
 const UnAuthorized = lazy(() => import('./Components/Layout/UnAuthorized'));
 const PrivateRoute = lazy(() => import('./Store/reducers/Auth/PrivateRoute'));
 const Signup = lazy(() => import('./Components/Signup/Signup'));
+const SignIn = lazy(() => import('./Components/Login/SignIn'));
 function App() {
   return (
     <Routes>
