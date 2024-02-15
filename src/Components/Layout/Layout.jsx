@@ -4,6 +4,7 @@ import Loader from './Loader';
 import Navbar from '../Navbar/Navbar';
 import AppLayout from '../AppLayout/AppLayout';
 import Footer from '../Footer/Footer';
+import { Box } from '@mantine/core';
 
 function LoadingScreen() {
   return <Loader color="#ffffff" size={'large'} />;
@@ -12,12 +13,11 @@ function LoadingScreen() {
 const Layout = () => {
   return (
     <Suspense fallback={<LoadingScreen />}>
-      <div>
-        <AppLayout>
-          <Outlet />
-        </AppLayout>
+      <AppLayout />
+      <Box mt={100}>
+        <Outlet />
         <Footer />
-      </div>
+      </Box>
     </Suspense>
   );
 };

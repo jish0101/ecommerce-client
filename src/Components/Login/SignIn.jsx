@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { CheckIcon, Loader } from '@mantine/core';
+import { Loader } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { logoDark } from '../../Assets/index';
 import { selectIsAuth } from '../../Store/reducers/Auth/authSelector';
@@ -28,14 +28,12 @@ function SignIn() {
     formState: { errors },
   } = form;
 
-  const {
-    mutateAsync: login,
-    isLoading: isLoadingLogin,
-    error: loginError,
-  } = usePostFetch({
+  const { mutateAsync: login, isPending: isLoadingLogin } = usePostFetch({
     queryKey: API_KEYS.login,
     url: API_URL.login,
   });
+
+  console.log('isLoadingLogin', isLoadingLogin);
 
   const formSubmit = async (body) => {
     try {
