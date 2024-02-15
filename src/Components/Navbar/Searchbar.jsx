@@ -4,7 +4,7 @@ import { Input } from '@mantine/core';
 
 const Searchbar = () => {
   return (
-    <div className="w-full flex items-center h-full">
+    <div className="flex items-center h-full flex-1">
       <Input
         size="md"
         variant="unstyled"
