@@ -66,7 +66,7 @@ const AccountOrders = () => {
               <li>
                 <Link
                   className="hover:text-orange-400 hover:underline text-slate-700 text-sm"
-                  to={'/account'}
+                  to={'/user-account'}
                 >
                   Account
                 </Link>
