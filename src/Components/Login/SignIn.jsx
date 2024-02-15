@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { CheckIcon, Loader } from '@mantine/core';
+import { Loader } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { logoDark } from '../../Assets/index';
 import { selectIsAuth } from '../../Store/reducers/Auth/authSelector';
@@ -28,11 +28,7 @@ function SignIn() {
     formState: { errors },
   } = form;
 
-  const {
-    mutateAsync: login,
-    isLoading: isLoadingLogin,
-    error: loginError,
-  } = usePostFetch({
+  const { mutateAsync: login, isPending: isLoadingLogin } = usePostFetch({
     queryKey: API_KEYS.login,
     url: API_URL.login,
   });
@@ -46,11 +42,11 @@ function SignIn() {
         notifications.show({
           id: 'login',
           withCloseButton: true,
-          withBorder: true,
           autoClose: 2000,
           title: <h4 className="font-bold text-lg">Welcome</h4>,
           message: <p className="text-base">{message}</p>,
           color: 'yellow',
+          withBorder: true,
           radius: 'lg',
           icon: <Check size={40} className="p-1" key={'login'} />,
           loading: false,
@@ -58,18 +54,18 @@ function SignIn() {
         return dispatch(signin(data));
       }
     } catch (err) {
-      const error = err.response.data;
+      const error = err?.response?.data;
       notifications.show({
         id: 'login',
         withCloseButton: true,
         autoClose: 2000,
         title: <h4 className="font-bold text-lg">Oops!</h4>,
-        message: <p className="text-base">{error.message}</p>,
+        message: <p className="text-base">{error?.message}</p>,
         color: 'red',
         icon: <XCircle size={50} key={'login'} />,
         loading: false,
       });
-      console.error(error);
+      console.error(err);
     }
   };
 
@@ -96,7 +92,7 @@ function SignIn() {
     const isMounted = true;
     try {
       const auth = JSON.parse(localStorage.getItem(authKey));
-      if (auth && auth.id) {
+      if (auth && auth._id) {
         refresh();
       }
     } catch (error) {
@@ -125,8 +121,8 @@ function SignIn() {
   }
 
   return (
-    <div className="w-full">
-      <div className="w-full my-4 shadow-md pb-10">
+    <div className="w-full my-10">
+      <div className="w-full shadow-md pb-10">
         <form
           className="w-[370px] mx-auto flex flex-col items-center"
           action="#"
@@ -211,7 +207,7 @@ function SignIn() {
           </div>
         </form>
       </div>
-      <div className="w-full flex flex-col gap-4 justify-center items-center py-4">
+      <div className="w-full flex flex-col gap-4 justify-center items-center my-4">
         <div className="flex items-center gap-6 justify-center">
           <p className="text-xs text-blue-600 hover:text-orange-600 hover:underline underline-offset-1 cursor-pointer duration-100 ">
             Conditions of Use

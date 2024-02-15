@@ -11,7 +11,6 @@ const NotFound = lazy(() => import('./Components/Layout/NotFound'));
 const UnAuthorized = lazy(() => import('./Components/Layout/UnAuthorized'));
 const PrivateRoute = lazy(() => import('./Store/reducers/Auth/PrivateRoute'));
 const Signup = lazy(() => import('./Components/Signup/Signup'));
-
 function App() {
   return (
     <Routes>
@@ -22,6 +21,9 @@ function App() {
 
         <Route element={<PrivateRoute roles={[ACCOUNT_TYPES.admin, ACCOUNT_TYPES.member]} />}>
           <Route index element={<Home />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/user-account" element={<Account />} />
         </Route>
       </Route>
 
