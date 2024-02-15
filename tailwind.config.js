@@ -24,7 +24,7 @@ export default {
         'yellow-100': '#fff6e1',
         'yellow-200': '#ffeccc',
         'yellow-300': '#ffd79b',
-        'yellow-400': '#ffc164',
+        'yellow-400': '#f0c14b',
         'yellow-500': '#ffae38',
         'yellow-600': '#ffa31b',
         'yellow-700': '#ff9d09',

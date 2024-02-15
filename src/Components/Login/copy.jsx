@@ -1,4 +1,5 @@
-<form
+{
+  /* <form
   action="#"
   onSubmit={handleSubmit(formSubmit)}
   className="w-[370px] mx-auto flex flex-col items-center"
@@ -7,7 +8,8 @@
     <label className="text-sm font-medium" htmlFor="name">
       Name
     </label>
-
+[#f7dfa5]
+border border-zinc-400 
     <input
       type="text"
       id="name"
@@ -71,4 +73,5 @@
     />
   </div>
   <button>Submit</button>
-</form>;
+</form>; */
+}
