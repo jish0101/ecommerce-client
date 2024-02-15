@@ -3,16 +3,20 @@ import { logo } from '../../Assets';
 import { MapPin, ShoppingCart } from 'lucide-react';
 import Searchbar from './Searchbar.jsx';
 import AccountOrders from './AccountOrders.jsx';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+  const navigate = useNavigate();
   return (
     <div className="h-[60%] bg-darkblue-1000 text-white">
       <nav className="flex h-full gap-2 p-1 px-3">
-        <div className="flex rounded-sm items-center px-2 pt-3 hover:outline hover:outline-1">
+        <div
+          onClick={() => navigate('/')}
+          className="flex rounded-sm items-center px-2 pt-3 hover:outline hover:outline-1 cursor-pointer"
+        >
           <img className="w-24" src={logo} alt="logoDark" />
         </div>
-        <div className="flex min-w-fit rounded-sm flex pt-2 p-1 gap-1 hover:outline hover:outline-1">
+        <div className="flex min-w-fit rounded-sm pt-2 p-1 gap-1 hover:outline hover:outline-1 cursor-pointer">
           <MapPin size={20} className="self-center" />
           <div className="flex flex-col leading-3">
             <span className="text-lightText text-xs">{'Deliver to Jishan'}</span>
