@@ -9,12 +9,12 @@ export const api = axios.create({
 
 export const API_URL = {
   login: 'auth/login',
-  signup: 'auth/signup',
+  signup: 'user/',
 };
 
 export const API_KEYS = {
   login: 'auth/login',
-  signup: 'auth/signup',
+  signup: 'user/',
 };
 
 /**
@@ -94,6 +94,27 @@ export const usePostFetch = ({ queryKey, url, token }) => {
   }
 };
 
+export const usePostForm = ({ queryKey, url, token }) => {
+  try {
+    const queryClient = useQueryClient();
+    const queryFunc = async ({ body }) => {
+      const response = await api.post(url, body, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response;
+    };
+    const mutation = useMutation({
+      mutationFn: queryFunc,
+      onSuccess: () => {
+        queryClient.invalidateQueries(queryKey);
+      },
+    });
+    return mutation;
+  } catch (error) {
+    return error;
+  }
+};
+
 /**
  * Fetches data from the specified URL using a PUT request and updates the query cache upon successful mutation.
  *
@@ -116,8 +137,7 @@ export const usePutFetch = ({ queryKey, url, body, token }) => {
     });
     return mutation;
   } catch (error) {
-    console.error(error);
-    return null;
+    return error;
   }
 };
 

@@ -8,7 +8,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   return (
-    <div className="grid max-w-[80%] mx-auto p-3 gap-2 my-12">
+    <div className="grid max-w-[80%] mx-auto gap-2">
       <p>User Name: {user.name}</p>
       <p>Email: {user.email}</p>
       <p>Role: {user.role}</p>
