@@ -33,8 +33,6 @@ function SignIn() {
     url: API_URL.login,
   });
 
-  console.log('isLoadingLogin', isLoadingLogin);
-
   const formSubmit = async (body) => {
     try {
       const res = await login({ body });
@@ -56,18 +54,18 @@ function SignIn() {
         return dispatch(signin(data));
       }
     } catch (err) {
-      const error = err.response.data;
+      const error = err?.response?.data;
       notifications.show({
         id: 'login',
         withCloseButton: true,
         autoClose: 2000,
         title: <h4 className="font-bold text-lg">Oops!</h4>,
-        message: <p className="text-base">{error.message}</p>,
+        message: <p className="text-base">{error?.message}</p>,
         color: 'red',
         icon: <XCircle size={50} key={'login'} />,
         loading: false,
       });
-      console.error(error);
+      console.error(err);
     }
   };
 
@@ -94,7 +92,7 @@ function SignIn() {
     const isMounted = true;
     try {
       const auth = JSON.parse(localStorage.getItem(authKey));
-      if (auth && auth.id) {
+      if (auth && auth._id) {
         refresh();
       }
     } catch (error) {

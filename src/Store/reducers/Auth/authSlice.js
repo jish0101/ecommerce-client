@@ -12,12 +12,15 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     signin: (state, action) => {
-      localStorage.setItem(
-        authKey,
-        JSON.stringify({
-          id: action.payload.id,
-        }),
-      );
+      const auth = JSON.parse(localStorage.getItem(authKey));
+      if (auth && !auth._id) {
+        localStorage.setItem(
+          authKey,
+          JSON.stringify({
+            _id: action.payload._id,
+          }),
+        );
+      }
       state.isAuthenticated = true;
       state.user = action.payload;
     },
