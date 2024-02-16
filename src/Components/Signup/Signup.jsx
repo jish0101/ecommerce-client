@@ -16,7 +16,7 @@ import { API_KEYS, API_URL, usePostForm } from '../../Api/api';
 function Signup() {
   const isAuthenticatedRedux = useSelector(selectIsAuth);
   const navigate = useNavigate();
-  const { mutateAsync: signup, isLoading: isLoadingSignup } = usePostForm({
+  const { mutateAsync: signup, isPending: isLoadingSignup } = usePostForm({
     queryKey: API_KEYS.signup,
     url: API_URL.signup,
   });
@@ -64,7 +64,6 @@ function Signup() {
           icon: <Check size={40} className="p-1" key={'login'} />,
           loading: false,
         });
-        return dispatch(signin(data));
       }
     } catch (err) {
       const error = err?.response;
