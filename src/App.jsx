@@ -11,8 +11,9 @@ const PrivateRoute = lazy(() => import('./Store/reducers/Auth/PrivateRoute'));
 const Signup = lazy(() => import('./Components/Signup/Signup'));
 const SignIn = lazy(() => import('./Components/Login/SignIn'));
 const Cart = lazy(() => import('./Components/Cart/Cart'));
-const Orders = lazy(() => import('./Components/Orders/Orders.jsx'));
-const Account = lazy(() => import('./Components/Account/Account.jsx'));
+const Orders = lazy(() => import('./Components/Orders/Orders'));
+const Account = lazy(() => import('./Components/Account/Account'));
+const AccountProfile = lazy(() => import('./Components/Account/AccountProfile'));
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/user-account" element={<Account />} />
+          <Route path="/user-profile" element={<AccountProfile />} />
         </Route>
       </Route>
 
