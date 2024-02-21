@@ -4,7 +4,7 @@ export const authKey = 'cloneAppUserId';
 
 const initialState = {
   isAuthenticated: false,
-  user: null,
+  user: {},
 };
 
 const authSlice = createSlice({
