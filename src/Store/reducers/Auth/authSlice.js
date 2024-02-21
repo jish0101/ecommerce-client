@@ -13,7 +13,7 @@ const authSlice = createSlice({
   reducers: {
     signin: (state, action) => {
       const auth = JSON.parse(localStorage.getItem(authKey));
-      if (auth && !auth._id) {
+      if (!auth) {
         localStorage.setItem(
           authKey,
           JSON.stringify({
