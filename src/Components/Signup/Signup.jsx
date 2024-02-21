@@ -64,7 +64,7 @@ function Signup() {
           icon: <Check size={40} className="p-1" key={'login'} />,
           loading: false,
         });
-        return dispatch(signin(data));
+        return navigate('/verify');
       }
     } catch (err) {
       const error = err?.response;
