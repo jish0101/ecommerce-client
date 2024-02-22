@@ -32,7 +32,7 @@ const AccountOrders = () => {
       <HoverCard width={320} shadow="md" withArrow openDelay={200} closeDelay={400}>
         <HoverCard.Target>
           {/* <Avatar src={user?.profile} radius="xl" /> */}
-          <div className="flex flex-col h-full rounded-sm hover:outline hover:outline-1 p-1">
+          <div className="flex flex-col rounded-sm hover:outline hover:outline-1 p-1">
             <span className="text-sm text-lightText">Hello, {getName() || ''}</span>
             <span className="flex items-center gap-1 font-semibold">
               Account & Lists <ChevronDown size={15} />

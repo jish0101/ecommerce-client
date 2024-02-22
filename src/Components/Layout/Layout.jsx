@@ -25,19 +25,20 @@ const Layout = () => {
   return (
     <Suspense fallback={<LoadingScreen />}>
       <AppLayout>
-        <ScrollArea
-          viewportRef={scrollRef}
-          scrollbarSize={15}
-          style={{ height: 'calc(100vh - 100px)' }}
-          // mt={'100px'}
-        >
-          <div style={{ height: 'calc(100vh - 100px)' }}>
-            <Outlet />
-          </div>
-          <div>
-            <Footer scrollTop={scrollTop} />
-          </div>
-        </ScrollArea>
+        <div className="h-full bg-amazon_light">
+          <ScrollArea
+            viewportRef={scrollRef}
+            scrollbarSize={15}
+            style={{ height: 'calc(100vh - 100px)' }}
+          >
+            <div className="bg-white" style={{ minHeight: 'calc(80vh)' }}>
+              <Outlet />
+            </div>
+            <div>
+              <Footer scrollTop={scrollTop} />
+            </div>
+          </ScrollArea>
+        </div>
       </AppLayout>
     </Suspense>
   );
