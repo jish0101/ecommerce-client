@@ -181,7 +181,7 @@ function SignIn() {
               {/* <Button variant="filled" color="yellow" radius="md">
                 Button
               </Button> */}
-              <p className="text-sm text-black leadng-4 mt-4">
+              <p className="text-sm text-black leading-4 mt-4">
                 By creating an account, you agree with amazon's
                 <span className="text-blue-600"> Condition of use </span>
                 and
