@@ -8,14 +8,9 @@ const Home = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   return (
-    <div className="grid max-w-[80%] mx-auto gap-2">
-      <p>User Name: {user.name}</p>
-      <p>Email: {user.email}</p>
-      <p>Role: {user.role}</p>
-      <p className="break-all">Token: {user.token}</p>
-      <Button variant="outline" onClick={() => dispatch(logout())}>
-        Logout
-      </Button>
+    <div className="grid text-center p-3 gap-2 text-slate-900">
+      <h1 className="text-5xl font-bold">Welcome! Fellow Dev</h1>
+      <p>To logout hover over top right accounts column.</p>
     </div>
   );
 };

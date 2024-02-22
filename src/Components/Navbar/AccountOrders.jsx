@@ -1,12 +1,23 @@
 import { HoverCard, Avatar, Text, Group, Anchor, Stack } from '@mantine/core';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../Store/reducers/Auth/authSelector';
-import { ChevronDown } from 'lucide-react';
+import { Check, ChevronDown, XCircle } from 'lucide-react';
 import { BASE_URL } from '../../Lib/GlobalExports';
 import { Link } from 'react-router-dom';
+import { logout } from '../../Store/reducers/Auth/authSlice';
+import { API_KEYS, API_URL, usePostFetch } from '../../Api/api';
+import { notifications } from '@mantine/notifications';
+import { useEffect } from 'react';
+import { startLoading, endLoading } from '../../Store/reducers/globalLoader/loaderSlice';
 
 const AccountOrders = () => {
   const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+
+  const { mutateAsync: logoutApi, isPending: isLoadingLogout } = usePostFetch({
+    queryKey: API_KEYS.logout,
+    url: API_URL.logout,
+  });
 
   const getName = () => {
     try {
@@ -20,19 +31,60 @@ const AccountOrders = () => {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     try {
+      const res = await logoutApi({});
+      const { status, message } = res.data;
+
+      if (status) {
+        notifications.show({
+          id: 'logout',
+          withCloseButton: true,
+          autoClose: 2000,
+          title: <h4 className="font-bold text-lg">Welcome</h4>,
+          message: <p className="text-base">{message}</p>,
+          color: 'yellow',
+          withBorder: true,
+          radius: 'lg',
+          icon: <Check size={40} className="p-1" key={'login'} />,
+          loading: false,
+        });
+        dispatch(logout());
+      }
+    } catch (err) {
+      const error = err?.response?.data;
+      console.log(err);
+      notifications.show({
+        id: 'logout',
+        withCloseButton: true,
+        autoClose: 2000,
+        title: <h4 className="font-bold text-lg">Oops!</h4>,
+        message: <p className="text-base">{error?.message}</p>,
+        color: 'red',
+        icon: <XCircle size={50} key={'login'} />,
+        loading: false,
+      });
+    }
+  };
+
+  useEffect(() => {
+    try {
+      if (isLoadingLogout) {
+        dispatch(startLoading());
+      } else {
+        dispatch(endLoading());
+      }
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [isLoadingLogout]);
 
   return (
     <Group justify="center">
       <HoverCard width={320} shadow="md" withArrow openDelay={200} closeDelay={400}>
         <HoverCard.Target>
           {/* <Avatar src={user?.profile} radius="xl" /> */}
-          <div className="flex flex-col h-full rounded-sm hover:outline hover:outline-1 p-1">
+          <div className="flex flex-col rounded-sm hover:outline hover:outline-1 p-1">
             <span className="text-sm text-lightText">Hello, {getName() || ''}</span>
             <span className="flex items-center gap-1 font-semibold">
               Account & Lists <ChevronDown size={15} />
@@ -80,12 +132,13 @@ const AccountOrders = () => {
                 </Link>
               </li>
               <li>
-                <Link
-                  className="hover:text-orange-400 hover:underline text-slate-700 text-sm"
+                <button
+                  className="hover:text-orange-400 hover:underline text-slate-700 text-sm disabled:cursor-not-allowed disabled:opacity-70"
                   onClick={handleLogout}
+                  disabled={isLoadingLogout}
                 >
-                  Sign Out
-                </Link>
+                  Sign out
+                </button>
               </li>
             </ul>
           </div>

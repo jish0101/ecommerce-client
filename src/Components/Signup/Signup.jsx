@@ -64,6 +64,7 @@ function Signup() {
           icon: <Check size={40} className="p-1" key={'login'} />,
           loading: false,
         });
+        return navigate('/verify');
       }
     } catch (err) {
       const error = err?.response;
@@ -76,7 +77,7 @@ function Signup() {
         message: <p className="text-base">{error?.data?.message}</p>,
         color: 'red',
         icon: <XCircle size={50} key={'login'} />,
-        loading: false,
+        loading: true,
         onClose: () => {
           if (error.status === 409) {
             navigate('/signin');

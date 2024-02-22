@@ -14,6 +14,7 @@ const Cart = lazy(() => import('./Components/Cart/Cart'));
 const Orders = lazy(() => import('./Components/Orders/Orders'));
 const Account = lazy(() => import('./Components/Account/Account'));
 const AccountProfile = lazy(() => import('./Components/Account/AccountProfile'));
+const VerifyEmail = lazy(() => import('./Components/Signup/VerifyEmail.jsx'));
 
 function App() {
   return (
@@ -23,7 +24,13 @@ function App() {
         {/* Pass roles array to this PrivateRoute component with account type that is allowed. */}
         {/* Not passing roles will allow every logged in user to that route */}
 
-        <Route element={<PrivateRoute roles={[ACCOUNT_TYPES.admin, ACCOUNT_TYPES.member]} />}>
+        <Route
+          element={
+            <PrivateRoute
+              roles={[ACCOUNT_TYPES.admin, ACCOUNT_TYPES['super-admin'], ACCOUNT_TYPES.member]}
+            />
+          }
+        >
           <Route index element={<Home />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/orders" element={<Orders />} />
@@ -37,6 +44,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/verify" element={<VerifyEmail />} />
       </Route>
     </Routes>
   );
