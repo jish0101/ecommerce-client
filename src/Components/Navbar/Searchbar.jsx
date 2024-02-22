@@ -11,15 +11,18 @@ const Searchbar = () => {
         variant="unstyled"
         placeholder="Search Amazon"
         className="px-3 bg-white w-full rounded-md focus-within:outline focus-within:outline-orange_100"
+        leftSectionWidth={'15%'}
+        leftSectionPointerEvents="all"
         leftSection={
-          <div className="w-32">
-            <Select />
+          <div className="cursor-pointer">
+            <Select placeholder="Pick value" data={['React', 'Angular', 'Vue', 'Svelte']} />
           </div>
         }
+        rightSectionPointerEvents="all"
         rightSection={
-          <div className="bg-orange_100 text-darkblue-1000 h-[105%] p-2 border border-orange_100">
+          <button className="bg-orange_100 text-darkblue-1000 rounded-r-md h-[105%] p-2 border border-orange_100">
             <Search />
-          </div>
+          </button>
         }
       />
     </div>

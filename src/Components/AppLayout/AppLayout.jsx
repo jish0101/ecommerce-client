@@ -2,14 +2,15 @@ import { AppShell, Burger, Flex, Group, ScrollArea, Skeleton } from '@mantine/co
 import { useDisclosure } from '@mantine/hooks';
 import Navbar from '../Navbar/Navbar';
 
-const AppLayout = () => {
+const AppLayout = ({ children }) => {
   const [opened, { toggle }] = useDisclosure();
 
   return (
     <AppShell
       header={{ height: 100 }}
       navbar={{ width: 350, breakpoint: 'sm', collapsed: { mobile: !opened, desktop: !opened } }}
-      padding="md"
+      // padding="md"
+      h={'100%'}
     >
       <AppShell.Header>
         <Navbar />
@@ -39,7 +40,7 @@ const AppLayout = () => {
         </AppShell.Section>
         <AppShell.Section>Navbar footer – always at the bottom</AppShell.Section>
       </AppShell.Navbar>
-      {/* <AppShell.Main>{children}</AppShell.Main> */}
+      <AppShell.Main>{children}</AppShell.Main>
     </AppShell>
   );
 };

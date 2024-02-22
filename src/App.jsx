@@ -24,7 +24,13 @@ function App() {
         {/* Pass roles array to this PrivateRoute component with account type that is allowed. */}
         {/* Not passing roles will allow every logged in user to that route */}
 
-        <Route element={<PrivateRoute roles={[ACCOUNT_TYPES.admin, ACCOUNT_TYPES.member]} />}>
+        <Route
+          element={
+            <PrivateRoute
+              roles={[ACCOUNT_TYPES.admin, ACCOUNT_TYPES['super-admin'], ACCOUNT_TYPES.member]}
+            />
+          }
+        >
           <Route index element={<Home />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/orders" element={<Orders />} />
