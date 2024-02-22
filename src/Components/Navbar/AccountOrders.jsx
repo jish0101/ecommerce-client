@@ -33,7 +33,7 @@ const AccountOrders = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await logoutApi();
+      const res = await logoutApi({});
       const { status, message } = res.data;
 
       if (status) {
