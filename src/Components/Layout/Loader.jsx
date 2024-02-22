@@ -1,6 +1,7 @@
 import React from 'react';
 import { Loader } from '@mantine/core';
-const loader = () => {
+
+const LoaderComponent = () => {
   return (
     <div className="w-full h-screen flex justify-center items-center">
       <Loader type="dots" size={'xl'} color="yellow" />
@@ -8,4 +9,4 @@ const loader = () => {
   );
 };
 
-export default loader;
+export default LoaderComponent;

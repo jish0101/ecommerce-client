@@ -58,7 +58,7 @@ const Footer = ({ scrollTop }) => {
   return (
     <div className="text-white">
       <div className="flex flex-col">
-        <button className="bg-amazon_lighter hover:opacity-90 text-sm p-3" onClick={scrollTop}>
+        <button className="bg-amazon_lighter hover:opacity-75 text-sm p-3" onClick={scrollTop}>
           Back to top
         </button>
       </div>
@@ -79,8 +79,22 @@ const Footer = ({ scrollTop }) => {
             </div>
           );
         })}
-
-        {/* <div></div> */}
+      </div>
+      <div className="flex flex-col items-center my-3 py-3">
+        <ul className="flex gap-2">
+          <li>
+            <Link className="text-sm hover:underline">Conditions of Use</Link>
+          </li>
+          <li>
+            <Link className="text-sm hover:underline">Privacy Notice</Link>
+          </li>
+          <li>
+            <Link className="text-sm hover:underline">Your Ads Privacy Choices</Link>
+          </li>
+        </ul>
+        <span className="flex items-center text-sm">
+          &#169; 1996-2024, Amazon.com, Inc. or its affiliates
+        </span>
       </div>
     </div>
   );
