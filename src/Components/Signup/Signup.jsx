@@ -68,6 +68,7 @@ function Signup() {
       }
     } catch (err) {
       const error = err?.response;
+
       notifications.show({
         id: 'signup',
         withCloseButton: true,
@@ -79,12 +80,12 @@ function Signup() {
         icon: <XCircle size={50} key={'login'} />,
         loading: true,
         onClose: () => {
-          if (error.status === 409) {
+          if (error && error.status === 409) {
             navigate('/signin');
           }
         },
       });
-      console.error(error);
+      console.log(err);
     }
   };
 
