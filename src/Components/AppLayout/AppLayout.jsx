@@ -1,9 +1,13 @@
 import { AppShell, Box, Burger, Group, ScrollArea, Skeleton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Navbar from '../Navbar/Navbar';
+import { useSelector } from 'react-redux';
+import { selectProductCategories } from '../../Store/reducers/ProductCateogory/productCateogoriesSelector';
 
 const AppLayout = ({ children }) => {
   const [opened, { toggle }] = useDisclosure();
+  const productCategories = useSelector(selectProductCategories);
+  console.log('🚀 ~ AppLayout ~ productCategories:', productCategories);
 
   return (
     <AppShell

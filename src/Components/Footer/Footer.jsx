@@ -69,7 +69,7 @@ const Footer = ({ scrollTop }) => {
               <ul className="flex flex-col gap-2">
                 <h3 className="font-semibold text-lg">{heading}</h3>
                 {links.map(({ linkName, href }) => (
-                  <li key={`${id}${href}`}>
+                  <li key={`${id}${linkName}`}>
                     <Link className="text-sm hover:underline" to={href}>
                       {linkName}
                     </Link>

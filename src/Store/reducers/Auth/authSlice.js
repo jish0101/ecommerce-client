@@ -4,6 +4,7 @@ export const authKey = 'cloneAppUserId';
 
 const initialState = {
   isAuthenticated: false,
+  isTrusted: true,
   user: {},
 };
 
@@ -12,20 +13,21 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     signin: (state, action) => {
-      const auth = JSON.parse(localStorage.getItem(authKey));
-      if (!auth) {
+      const payload = action.payload;
+      const isPersist = payload?.isTrusted;
+      if (isPersist) {
         localStorage.setItem(
           authKey,
           JSON.stringify({
-            _id: action.payload._id,
+            _id: action.payload.user._id,
           }),
         );
       }
       state.isAuthenticated = true;
-      state.user = action.payload;
-    },
-    setUser: (state, action) => {
-      state.user = action.payload;
+      state.user = payload.user;
+      if (payload.isTrusted) {
+        state.isTrusted = payload.isTrusted;
+      }
     },
     logout: (state) => {
       try {
@@ -39,5 +41,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { signin, logout, setUser } = authSlice.actions;
+export const { signin, logout, setIsTrusted } = authSlice.actions;
 export default authSlice.reducer;

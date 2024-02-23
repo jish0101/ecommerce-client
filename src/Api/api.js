@@ -1,9 +1,17 @@
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { BASE_URL } from '../Lib/GlobalExports';
+import privateAxios from '../Hooks/useAxiosPrivate';
 
 export const api = axios.create({
   baseURL: BASE_URL,
+});
+
+export const axiosPrivate = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
   withCredentials: true,
 });
 
@@ -11,12 +19,14 @@ export const API_URL = {
   login: 'auth/login',
   logout: 'auth/logout',
   signup: 'user/',
+  productCateogry: 'product-category/',
 };
 
 export const API_KEYS = {
   login: 'auth/login',
   logout: 'auth/logout',
   signup: 'user/',
+  productCateogry: 'product-category/',
 };
 
 /**
@@ -48,20 +58,21 @@ export const useGetFetch = ({ queryKey, url, isPage, filters, token }) => {
     }
 
     const queryFunc = async () => {
-      const response = await api.get(endPoint, {
+      const { data } = await privateAxios.get(endPoint, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      return response;
+      return data;
     };
-
-    return useQuery(queryKey, queryFunc, {
+    return useQuery({
+      queryFn: queryFunc,
+      queryKey,
       refetchOnWindowFocus: false,
       staleTime: Infinity,
       retryDelay: Infinity,
     });
   } catch (error) {
     console.error(error);
-    return null;
+    return error;
   }
 };
 
@@ -78,7 +89,7 @@ export const usePostFetch = ({ queryKey, url, token }) => {
   try {
     const queryClient = useQueryClient();
     const queryFunc = async ({ body }) => {
-      const response = await api.post(url, body, {
+      const response = await axiosPrivate.post(url, body, {
         headers: { Authorization: `Bearer ${token}` },
         'Content-Type': 'application/json',
       });
@@ -100,7 +111,7 @@ export const usePostForm = ({ queryKey, url, token }) => {
   try {
     const queryClient = useQueryClient();
     const queryFunc = async ({ body }) => {
-      const response = await api.post(url, body, {
+      const response = await privateAxios.post(url, body, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return response;
@@ -127,7 +138,7 @@ export const usePutFetch = ({ queryKey, url, body, token }) => {
   try {
     const queryClient = useQueryClient();
     const queryFunc = async () => {
-      const response = await api.put(url, body, {
+      const response = await privateAxios.put(url, body, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return response;
@@ -153,7 +164,7 @@ export const useDeleteFetch = ({ queryKey, url, token }) => {
   try {
     const queryClient = useQueryClient();
     const queryFunc = async () => {
-      const response = await api.delete(url, {
+      const response = await privateAxios.delete(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return response;

@@ -1,23 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { Loader } from '@mantine/core';
+import { Checkbox, Loader } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { logoDark } from '../../Assets/index';
 import { selectIsAuth } from '../../Store/reducers/Auth/authSelector';
 import { useDispatch, useSelector } from 'react-redux';
 import { API_KEYS, API_URL, usePostFetch } from '../../Api/api';
-import { authKey, signin } from '../../Store/reducers/Auth/authSlice';
+import { signin } from '../../Store/reducers/Auth/authSlice';
 import { Check, XCircle } from 'lucide-react';
-import useRefreshToken from '../../Hooks/useRefreshToken';
 import '@mantine/notifications/styles.css';
 
 function SignIn() {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const refresh = useRefreshToken();
-  const [loading, setLoading] = useState(true);
   const isAuthenticatedRedux = useSelector(selectIsAuth);
   const prevLocation = location.state?.from?.pathname || '/';
 
@@ -51,7 +48,7 @@ function SignIn() {
           icon: <Check size={40} className="p-1" key={'login'} />,
           loading: false,
         });
-        return dispatch(signin(data));
+        return dispatch(signin({ user: data, isTrusted: body?.isTrusted }));
       }
     } catch (err) {
       const error = err?.response?.data;
@@ -89,20 +86,6 @@ function SignIn() {
   };
 
   useEffect(() => {
-    const isMounted = true;
-    try {
-      const auth = JSON.parse(localStorage.getItem(authKey));
-      if (auth && auth._id) {
-        refresh();
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      isMounted && setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
     try {
       if (isAuthenticatedRedux) {
         navigate(prevLocation, { replace: true });
@@ -111,14 +94,6 @@ function SignIn() {
       console.log(error);
     }
   }, [isAuthenticatedRedux]);
-
-  if (loading) {
-    return (
-      <div className="flex flex-col gap-2 justify-center items-center h-screen">
-        <Loader type="dots" size={'xl'} color="yellow" />
-      </div>
-    );
-  }
 
   return (
     <div className="w-full my-10">
@@ -165,6 +140,13 @@ function SignIn() {
                 </p>
               </div>
 
+              <div className="flex gap-1">
+                <Checkbox id="isTrusted" {...register('isTrusted')} />
+                <label className="select-none" htmlFor="isTrusted">
+                  This is a trusted device?
+                </label>
+              </div>
+
               <button
                 type="submit"
                 disabled={isLoadingLogin}
@@ -177,10 +159,6 @@ function SignIn() {
                 )}
               </button>
               <div className="flex justify-center"></div>
-
-              {/* <Button variant="filled" color="yellow" radius="md">
-                Button
-              </Button> */}
               <p className="text-sm text-black leading-4 mt-4">
                 By creating an account, you agree with amazon's
                 <span className="text-blue-600"> Condition of use </span>

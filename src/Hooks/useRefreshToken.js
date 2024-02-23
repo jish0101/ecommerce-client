@@ -13,7 +13,7 @@ const useRefreshToken = () => {
     });
 
     if (status) {
-      return dispatch(signin(userData));
+      return dispatch(signin({ user: userData }));
     }
     return;
   };

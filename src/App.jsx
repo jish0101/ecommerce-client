@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import SuspenseWrapper from './Components/Layout/SuspenseWrapper';
 import Layout from './Components/Layout/Layout';
 import { ACCOUNT_TYPES } from './Lib/Constants';
+import PersistLogin from './Hooks/PersistLogin';
 
 const Home = lazy(() => import('./Pages/home/Home'));
 const NotFound = lazy(() => import('./Components/Layout/NotFound'));
@@ -24,21 +25,22 @@ function App() {
         {/* Pass roles array to this PrivateRoute component with account type that is allowed. */}
         {/* Not passing roles will allow every logged in user to that route */}
 
-        <Route
-          element={
-            <PrivateRoute
-              roles={[ACCOUNT_TYPES.admin, ACCOUNT_TYPES['super-admin'], ACCOUNT_TYPES.member]}
-            />
-          }
-        >
-          <Route index element={<Home />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/orders" element={<Orders />} />
-          <Route path="/user-account" element={<Account />} />
-          <Route path="/user-profile" element={<AccountProfile />} />
+        <Route element={<PersistLogin />}>
+          <Route
+            element={
+              <PrivateRoute
+                roles={[ACCOUNT_TYPES.admin, ACCOUNT_TYPES['super-admin'], ACCOUNT_TYPES.member]}
+              />
+            }
+          >
+            <Route index element={<Home />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/user-account" element={<Account />} />
+            <Route path="/user-profile" element={<AccountProfile />} />
+          </Route>
         </Route>
       </Route>
-
       <Route element={<SuspenseWrapper />}>
         <Route path="/unauthorized" element={<UnAuthorized />} />
         <Route path="/signup" element={<Signup />} />
