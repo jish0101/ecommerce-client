@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { BASE_URL } from '../Lib/GlobalExports';
-import privateAxios from '../Hooks/useAxiosPrivate';
 
 export const api = axios.create({
   baseURL: BASE_URL,
@@ -108,7 +107,7 @@ export const usePostForm = ({ queryKey, url, token }) => {
   try {
     const queryClient = useQueryClient();
     const queryFunc = async ({ body }) => {
-      const response = await privateAxios.post(url, body, {
+      const response = await axiosPrivate.post(url, body, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return response;
@@ -135,7 +134,7 @@ export const usePutFetch = ({ queryKey, url, body, token }) => {
   try {
     const queryClient = useQueryClient();
     const queryFunc = async () => {
-      const response = await privateAxios.put(url, body, {
+      const response = await axiosPrivate.put(url, body, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return response;
@@ -161,7 +160,7 @@ export const useDeleteFetch = ({ queryKey, url, token }) => {
   try {
     const queryClient = useQueryClient();
     const queryFunc = async () => {
-      const response = await privateAxios.delete(url, {
+      const response = await axiosPrivate.delete(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return response;
