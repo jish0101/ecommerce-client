@@ -1,55 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { Input } from '@mantine/core';
 import { Select } from '@mantine/core';
-import { API_KEYS, API_URL, useGetFetch } from '../../Api/api';
-import { selectToken } from '../../Store/reducers/Auth/authSelector';
-import { useDispatch, useSelector } from 'react-redux';
-import { endLoading, startLoading } from '../../Store/reducers/globalLoader/loaderSlice';
+import useProductCategories from '../../Hooks/useProductCategories';
 
 const Searchbar = () => {
-  const token = useSelector(selectToken);
-  const dispatch = useDispatch();
-  const [productCateogry, setProductCategories] = useState([]);
-
-  const { data: categoryData, isFetching: isFetchingCategories } = useGetFetch({
-    queryKey: [API_KEYS.productCateogry],
-    url: API_URL.productCateogry,
+  const {
+    data: categoryData,
+    isFetching: isFetchingPC,
+    refetch: refetchPC,
+  } = useProductCategories({
     isPage: 1,
     filters: {
       rowCount: 100,
     },
-    token,
   });
-
-  console.log('🚀 ~ Searchbar ~ categoryData:', categoryData);
-  useEffect(() => {
-    try {
-      if (categoryData) {
-        const { data, status } = categoryData;
-        if (data && status) {
-          const res = data.map(({ name, _id }) => {
-            return { label: name, value: _id };
-          });
-          setProductCategories(res);
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [categoryData]);
-
-  useEffect(() => {
-    try {
-      if (isFetchingCategories) {
-        dispatch(startLoading());
-      } else {
-        dispatch(endLoading());
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [isFetchingCategories]);
 
   return (
     <div className="flex items-center h-full flex-1">
@@ -62,7 +27,7 @@ const Searchbar = () => {
         leftSectionPointerEvents="all"
         leftSection={
           <div className="cursor-pointer">
-            <Select placeholder="Pick value" data={productCateogry} />
+            <Select placeholder="All Category" data={categoryData} />
           </div>
         }
         rightSectionPointerEvents="all"

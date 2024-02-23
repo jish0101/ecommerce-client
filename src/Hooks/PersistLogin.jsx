@@ -7,17 +7,17 @@ import { authKey } from '../Store/reducers/Auth/authSlice';
 import LoaderComponent from '../Components/Layout/Loader';
 
 const PersistLogin = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const refresh = useRefreshToken();
   const token = useSelector(selectToken);
   const persist = JSON.parse(localStorage.getItem(authKey));
-  console.log('🚀 ~ PersistLogin ~ persist:', persist);
 
   useEffect(() => {
     let isMounted = true;
 
     const verifyRefreshToken = async () => {
       try {
+        setIsLoading(true);
         await refresh();
       } catch (err) {
         console.error(err);

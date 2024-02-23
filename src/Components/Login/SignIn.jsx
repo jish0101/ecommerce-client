@@ -143,7 +143,7 @@ function SignIn() {
               <div className="flex gap-1">
                 <Checkbox id="isTrusted" {...register('isTrusted')} />
                 <label className="select-none" htmlFor="isTrusted">
-                  This is a trusted device?
+                  Trust this device?
                 </label>
               </div>
 

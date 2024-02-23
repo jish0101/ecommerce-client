@@ -2,28 +2,32 @@ import { useEffect } from 'react';
 import { axiosPrivate } from '../Api/api';
 import useRefreshToken from './useRefreshToken';
 import { useSelector } from 'react-redux';
-import { selectIsAuth, selectUser } from '../Store/reducers/Auth/authSelector';
+import { selectIsAuth, selectToken } from '../Store/reducers/Auth/authSelector';
 
 const useAxiosPrivate = () => {
   const refresh = useRefreshToken();
   const auth = useSelector(selectIsAuth);
-  const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
 
   useEffect(() => {
+    let requestInterceptor;
+    let responseIntercept;
     try {
-      const requestInterceptor = axiosPrivate.interceptors.request.use(
+      requestInterceptor = axiosPrivate.interceptors.request.use(
         (config) => {
           if (!config.headers['Authorization']) {
-            config.headers['Authorization'] = `Bearer ${user?.token}`;
+            console.log('came here');
+            config.headers['Authorization'] = `Bearer ${token}`;
           }
           return config;
         },
         (err) => Promise.reject(err),
       );
 
-      const responseIntercept = axiosPrivate.interceptors.response.use(
+      responseIntercept = axiosPrivate.interceptors.response.use(
         (response) => response,
         async (err) => {
+          console.log('came here 2');
           const prevRequest = err?.config;
           if (err?.response?.status === 403 && !prevRequest?.sent) {
             prevRequest.sent = true;
