@@ -6,10 +6,7 @@ import { selectIsAuth, selectRole, selectToken } from './authSelector';
 function PrivateRoute({ roles }) {
   const role = useSelector(selectRole);
   const isAuthenticatedRedux = useSelector(selectIsAuth);
-  const token = useSelector(selectToken);
   const location = useLocation();
-
-  console.log('🚀 ~ PrivateRoute ~ token:', isAuthenticatedRedux, token);
 
   if (!isAuthenticatedRedux) {
     return <Navigate to="/signin" state={{ from: location }} replace />;

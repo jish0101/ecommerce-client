@@ -12,6 +12,8 @@ const PersistLogin = () => {
   const token = useSelector(selectToken);
   const persist = JSON.parse(localStorage.getItem(authKey));
 
+  console.log('🚀 ~ PersistLogin ~ token:', token);
+
   useEffect(() => {
     let isMounted = true;
 

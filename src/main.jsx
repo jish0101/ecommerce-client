@@ -8,9 +8,11 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { colorSchemeManager, theme } from './Theme/themeConfig';
 import App from './App';
-import { store } from './Store/store';
+import { persistor, store } from './Store/store';
 import { Notifications } from '@mantine/notifications';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import LoaderComponent from './Components/Layout/Loader';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const queryClient = new QueryClient();
 
@@ -24,9 +26,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       >
         <BrowserRouter>
           <Provider store={store}>
-            <Notifications />
-            {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-            <App />
+            <PersistGate loading={<LoaderComponent />} persistor={persistor}>
+              <Notifications />
+              <ReactQueryDevtools initialIsOpen={false} />
+              <App />
+            </PersistGate>
           </Provider>
         </BrowserRouter>
       </MantineProvider>
