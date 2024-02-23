@@ -9,9 +9,6 @@ export const api = axios.create({
 
 export const axiosPrivate = axios.create({
   baseURL: BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
   withCredentials: true,
 });
 
@@ -58,7 +55,7 @@ export const useGetFetch = ({ queryKey, url, isPage, filters, token }) => {
     }
 
     const queryFunc = async () => {
-      const { data } = await privateAxios.get(endPoint, {
+      const { data } = await axiosPrivate.get(endPoint, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return data;

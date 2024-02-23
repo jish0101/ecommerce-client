@@ -7,7 +7,6 @@ import { selectProductCategories } from '../../Store/reducers/ProductCateogory/p
 const AppLayout = ({ children }) => {
   const [opened, { toggle }] = useDisclosure();
   const productCategories = useSelector(selectProductCategories);
-  console.log('🚀 ~ AppLayout ~ productCategories:', productCategories);
 
   return (
     <AppShell
