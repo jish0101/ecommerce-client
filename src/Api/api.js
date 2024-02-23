@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { BASE_URL } from '../Lib/GlobalExports';
-import privateAxios from '../Hooks/useAxiosPrivate';
 
 export const api = axios.create({
   baseURL: BASE_URL,
