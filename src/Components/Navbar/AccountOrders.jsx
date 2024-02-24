@@ -93,7 +93,7 @@ const AccountOrders = () => {
         </HoverCard.Target>
         <HoverCard.Dropdown>
           <div className="flex items-center bg-blue-100 p-4 gap-3 rounded-md">
-            <Avatar className="outline outline-1" src={`${BASE_URL}${user?.profile}`} radius="xl" />
+            <Avatar className="outline outline-1" src={`${user?.profile}`} radius="xl" />
             <div className="flex flex-col">
               <Text size="sm" fw={700} style={{ lineHeight: 1 }}>
                 {user?.name}
