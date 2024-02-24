@@ -2,8 +2,10 @@ import React from 'react';
 import { logoDark } from '../../Assets';
 import { useSelector } from 'react-redux';
 import { PinInput } from '@mantine/core';
+import { selectUser } from '../../Store/reducers/Auth/authSelector';
+// import {selectUser} from '/'
 function VerifyEmail() {
-  const user = useSelector((state) => state.auth.user);
+  const user = useSelector(selectUser);
   // console.log(user);
   return (
     <div className="w-full ">
