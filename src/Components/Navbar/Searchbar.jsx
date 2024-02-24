@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { Input } from '@mantine/core';
 import { Select } from '@mantine/core';
+import useProductCategories from '../../Hooks/useProductCategories';
 
 const Searchbar = () => {
+  const {
+    data: categoryData,
+    // isFetching: isFetchingPC,
+    // refetch: refetchPC,
+  } = useProductCategories({
+    isPage: 1,
+    filters: {
+      rowCount: 100,
+    },
+  });
+
   return (
     <div className="flex items-center h-full flex-1">
       <Input
@@ -15,7 +27,7 @@ const Searchbar = () => {
         leftSectionPointerEvents="all"
         leftSection={
           <div className="cursor-pointer">
-            <Select placeholder="Pick value" data={['React', 'Angular', 'Vue', 'Svelte']} />
+            <Select placeholder="All Category" data={categoryData} />
           </div>
         }
         rightSectionPointerEvents="all"

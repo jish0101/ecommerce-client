@@ -12,24 +12,12 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     signin: (state, action) => {
-      const auth = JSON.parse(localStorage.getItem(authKey));
-      if (!auth) {
-        localStorage.setItem(
-          authKey,
-          JSON.stringify({
-            _id: action.payload._id,
-          }),
-        );
-      }
+      const payload = action.payload;
       state.isAuthenticated = true;
-      state.user = action.payload;
-    },
-    setUser: (state, action) => {
-      state.user = action.payload;
+      state.user = payload.user;
     },
     logout: (state) => {
       try {
-        localStorage.removeItem(authKey);
         state.isAuthenticated = initialState.isAuthenticated;
         state.user = initialState.user;
       } catch (err) {
@@ -39,5 +27,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { signin, logout, setUser } = authSlice.actions;
+export const { signin, logout, setIsTrusted } = authSlice.actions;
 export default authSlice.reducer;

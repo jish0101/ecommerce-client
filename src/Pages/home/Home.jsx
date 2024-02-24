@@ -9,7 +9,11 @@ const Home = () => {
   const user = useSelector(selectUser);
   return (
     <div className="grid text-center p-3 gap-2 text-slate-900">
-      <h1 className="text-5xl font-bold">Welcome! Fellow Dev</h1>
+      <h1 className="text-5xl font-bold">
+        Welcome
+        <span className="text-amazon_yellow">! </span>
+        Fellow Dev
+      </h1>
       <p>To logout hover over top right accounts column.</p>
     </div>
   );

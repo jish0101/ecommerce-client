@@ -13,9 +13,12 @@ const useRefreshToken = () => {
     });
 
     if (status) {
-      return dispatch(signin(userData));
+      dispatch(signin({ user: userData }));
     }
-    return;
+    return {
+      status,
+      data: userData,
+    };
   };
   return refresh;
 };

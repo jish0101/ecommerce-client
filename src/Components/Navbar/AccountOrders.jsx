@@ -41,7 +41,7 @@ const AccountOrders = () => {
           id: 'logout',
           withCloseButton: true,
           autoClose: 2000,
-          title: <h4 className="font-bold text-lg">Welcome</h4>,
+          title: <h4 className="font-bold text-lg">Bye!</h4>,
           message: <p className="text-base">{message}</p>,
           color: 'yellow',
           withBorder: true,
