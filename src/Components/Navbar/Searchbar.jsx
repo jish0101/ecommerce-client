@@ -1,10 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Search } from 'lucide-react';
 import { Input } from '@mantine/core';
 import { Select } from '@mantine/core';
 import useProductCategories from '../../Hooks/useProductCategories';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectSelectedCategory } from '../../Store/reducers/SelectedCategory/selectedCategory.selector';
+import { setSelectedCategory } from '../../Store/reducers/SelectedCategory/selectedCategorySlice';
 
 const Searchbar = () => {
+  const dispatch = useDispatch();
+  const selectedCategory = useSelector(selectSelectedCategory);
   const {
     data: categoryData,
     // isFetching: isFetchingPC,
@@ -27,7 +32,14 @@ const Searchbar = () => {
         leftSectionPointerEvents="all"
         leftSection={
           <div className="cursor-pointer">
-            <Select placeholder="All Category" data={categoryData} />
+            <Select
+              placeholder="All Category"
+              data={categoryData}
+              value={selectedCategory?.value || null}
+              onChange={(_, option) => {
+                return dispatch(setSelectedCategory(option));
+              }}
+            />
           </div>
         }
         rightSectionPointerEvents="all"

@@ -11,6 +11,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useAxiosPrivate from '../../Hooks/useAxiosPrivate';
 import { API_KEYS, API_URL } from '../../Api/api';
 import { logout } from '../../Store/reducers/Auth/authSlice';
+import { setSelectedCategory } from '../../Store/reducers/SelectedCategory/selectedCategorySlice';
 
 const AppLayout = ({ children }) => {
   const user = useSelector(selectUser);
@@ -54,6 +55,7 @@ const AppLayout = ({ children }) => {
       return {
         id: i,
         label: data?.label,
+        value: data?.value,
         link: `/search-page/${data?.value}`,
       };
     } catch (error) {
@@ -61,6 +63,14 @@ const AppLayout = ({ children }) => {
       return [];
     }
   });
+
+  const getSelectedCategory = (category) => {
+    try {
+      return categoryData.find((data) => data.value === category.value);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const cols = [
     {
@@ -132,6 +142,7 @@ const AppLayout = ({ children }) => {
                             if (linkDetails.onClick) {
                               return linkDetails.onClick();
                             } else {
+                              dispatch(setSelectedCategory(getSelectedCategory(linkDetails)));
                               dispatch(toggleSidebar());
                             }
                           }}
