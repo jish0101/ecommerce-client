@@ -7,8 +7,8 @@ import useProductCategories from '../../Hooks/useProductCategories';
 const Searchbar = () => {
   const {
     data: categoryData,
-    isFetching: isFetchingPC,
-    refetch: refetchPC,
+    // isFetching: isFetchingPC,
+    // refetch: refetchPC,
   } = useProductCategories({
     isPage: 1,
     filters: {

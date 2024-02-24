@@ -3,9 +3,9 @@ import { Routes, Route } from 'react-router-dom';
 import SuspenseWrapper from './Components/Layout/SuspenseWrapper';
 import Layout from './Components/Layout/Layout';
 import { ACCOUNT_TYPES } from './Lib/Constants';
-import PersistLogin from './Hooks/PersistLogin';
 
 const Home = lazy(() => import('./Pages/home/Home'));
+const SearchPage = lazy(() => import('./Pages/search/SearchPage.jsx'));
 const NotFound = lazy(() => import('./Components/Layout/NotFound'));
 const UnAuthorized = lazy(() => import('./Components/Layout/UnAuthorized'));
 const PrivateRoute = lazy(() => import('./Store/reducers/Auth/PrivateRoute'));
@@ -38,6 +38,8 @@ function App() {
           <Route path="/orders" element={<Orders />} />
           <Route path="/user-account" element={<Account />} />
           <Route path="/user-profile" element={<AccountProfile />} />
+          <Route path="/search-page/:id" element={<SearchPage />} />
+          <Route path="/search-page" element={<SearchPage />} />
         </Route>
       </Route>
       {/* </Route> */}
