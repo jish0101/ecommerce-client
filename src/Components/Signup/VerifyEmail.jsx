@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { logoDark } from '../../Assets';
 import { useSelector } from 'react-redux';
 import { PinInput } from '@mantine/core';
 import { selectUser } from '../../Store/reducers/Auth/authSelector';
 // import {selectUser} from '/'
 function VerifyEmail() {
+  const [enteredOtp, setEnteredOtp] = useState('');
   const user = useSelector(selectUser);
   // console.log(user);
+
+  const handleOtpVerifivation = () => {};
   return (
     <div className="w-full ">
       <div className="w-full  my-4 pb-10 ">
@@ -15,12 +18,14 @@ function VerifyEmail() {
           <div className="w-full border border-zinc-200 p-6 mt-4">
             <h2 className="font-titleFont text-3xl font-normal mb-4">Verification Required</h2>
             <p>
-              TO continue, complete this verification step.We've sent an OTP to the
+              To continue, complete this verification step.We've sent an OTP to the
               <span>{user.email}</span>. Please enter it below to complete verification.
             </p>
-            <div className="my-2">
-              <h2 className="font-bold">Enter OTP</h2>
-              <PinInput />
+            <div className="my-2  ">
+              <h2 className="font-bold flex justify-center">Enter OTP</h2>
+              <span className="flex justify-center mb-1">
+                <PinInput length={6} placeholder="*" />
+              </span>
             </div>
             <div className="my-5">
               <button
