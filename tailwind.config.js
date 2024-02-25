@@ -43,6 +43,7 @@ export default {
         'darkblue-1000': '#131921',
         amazon_blue: '#131921',
         amazon_light: '#232F3E',
+        amazon_gray: '#eaeded',
         amazon_lighter: '#37475A',
         amazon_yellow: '#febd69',
         orange_100: '#f3a847',

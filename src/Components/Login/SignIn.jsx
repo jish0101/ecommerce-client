@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { Checkbox, Loader } from '@mantine/core';
+import { Loader } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { logoDark } from '../../Assets/index';
 import { selectIsAuth } from '../../Store/reducers/Auth/authSelector';
@@ -48,7 +48,7 @@ function SignIn() {
           icon: <Check size={40} className="p-1" key={'login'} />,
           loading: false,
         });
-        return dispatch(signin({ user: data, isTrusted: body?.isTrusted }));
+        return dispatch(signin({ user: data }));
       }
     } catch (err) {
       const error = err?.response?.data;
@@ -138,13 +138,6 @@ function SignIn() {
                 <p className="text-red-600 text-xs font-semibold tracking-wide flex items-center gap-2">
                   {errors.password?.message}
                 </p>
-              </div>
-
-              <div className="flex gap-1">
-                <Checkbox id="isTrusted" {...register('isTrusted')} />
-                <label className="select-none" htmlFor="isTrusted">
-                  Trust this device?
-                </label>
               </div>
 
               <button

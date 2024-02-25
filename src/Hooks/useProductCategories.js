@@ -8,8 +8,8 @@ import { endLoading, startLoading } from '../Store/reducers/globalLoader/loaderS
 
 const useProductCategories = ({ filters, isPage }) => {
   const api = useAxiosPrivate();
-  const token = useSelector(selectToken);
   const dispatch = useDispatch();
+  const token = useSelector(selectToken);
   const [productCateogry, setProductCategories] = useState([]);
   const {
     data: productCateogryData,
