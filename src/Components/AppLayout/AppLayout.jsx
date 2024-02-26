@@ -66,6 +66,15 @@ const AppLayout = ({ children }) => {
     }
   };
 
+  const handleSidebarLabelClick = (linkDetails) => {
+    if (linkDetails.onClick) {
+      return linkDetails.onClick();
+    } else {
+      dispatch(setSelectedCategory(getSelectedCategory(linkDetails)));
+      dispatch(toggleSidebar());
+    }
+  };
+
   const cols = [
     {
       categoryName: 'Shop by Department',
@@ -90,16 +99,15 @@ const AppLayout = ({ children }) => {
 
   return (
     <AppShell
-      header={{ height: 100 }}
+      header={{ height: 95 }}
       navbar={{
         width: 350,
         breakpoint: 'sm',
         collapsed: { mobile: !isSidebarOpen, desktop: !isSidebarOpen },
       }}
-      h={'100%'}
     >
       <AppShell.Header>
-        <Group h={'100%'} w={'100%'}>
+        <Group h={'100%'}>
           <Box className="w-full h-full bg-amazon_light p-0 text-white">
             <Navbar />
             <div className="flex justify-start px-1">
@@ -128,23 +136,14 @@ const AppLayout = ({ children }) => {
           <div>
             <ul>
               {cols.map((col) => {
-                console.log('col.categoryName', col.categoryName);
                 return (
                   <div key={col.categoryName} className="border-b py-2">
                     <h2 className="font-semibold text-xl p-2 pl-8">{col.categoryName}</h2>
                     {col.cateogryLinks.map((linkDetails) => {
-                      console.log('linkDetails', linkDetails.id);
                       return (
                         <li
                           key={linkDetails.id}
-                          onClick={() => {
-                            if (linkDetails.onClick) {
-                              return linkDetails.onClick();
-                            } else {
-                              dispatch(setSelectedCategory(getSelectedCategory(linkDetails)));
-                              dispatch(toggleSidebar());
-                            }
-                          }}
+                          onClick={() => handleSidebarLabelClick(linkDetails)}
                           className="flex"
                         >
                           <Link

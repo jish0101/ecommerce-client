@@ -25,22 +25,18 @@ const Layout = () => {
     <Suspense fallback={<Loader />}>
       <div>
         <LoadingOverlay visible={isLoading} loaderProps={{ children: <Loader /> }} />
-        <AppLayout>
-          <div className="h-full bg-amazon_light">
-            <ScrollArea
-              viewportRef={scrollRef}
-              scrollbarSize={15}
-              style={{ height: 'calc(100vh - 100px)' }}
-            >
+        <div>
+          <ScrollArea viewportRef={scrollRef} scrollbarSize={15} style={{ height: 'calc(100vh)' }}>
+            <AppLayout>
               <div className="bg-white" style={{ minHeight: 'calc(80vh)' }}>
                 <Outlet />
               </div>
-              <div>
+              <div className="bg-amazon_light">
                 <Footer scrollTop={scrollTop} />
               </div>
-            </ScrollArea>
-          </div>
-        </AppLayout>
+            </AppLayout>
+          </ScrollArea>
+        </div>
       </div>
     </Suspense>
   );
