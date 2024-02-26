@@ -1,10 +1,20 @@
 import React from 'react';
 import { formatNumber } from '../../Lib/Utils';
+import { useNavigate } from 'react-router-dom';
 
-const ProductCard = ({ data }) => {
+const ProductCard = ({ data, to }) => {
   const { name, image, price, currency } = data;
+  const navigate = useNavigate();
+
+  const handleRedirect = () => {
+    navigate(to);
+  };
+
   return (
-    <div className="grid gap-2 cursor-pointer shadow-sm p-2">
+    <div
+      onClick={handleRedirect}
+      className="grid gap-3 cursor-pointer shadow-sm outline outline-1 outline-gray-200 p-3 rounded-md hover:scale-105 transition-transform duration-300"
+    >
       <div className="rounded-md overflow-hidden">
         <img className="flex max-w-[100%] object-cover" src={image} alt={name} />
       </div>

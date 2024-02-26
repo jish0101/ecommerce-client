@@ -7,13 +7,16 @@ import { Link } from 'react-router-dom';
 import useProductCategories from '../../Hooks/useProductCategories';
 import { selectSidebar } from '../../Store/reducers/sidebar/sidebar.selector';
 import { toggleSidebar } from '../../Store/reducers/sidebar/sidebar';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import useAxiosPrivate from '../../Hooks/useAxiosPrivate';
-import { API_KEYS, API_URL } from '../../Api/api';
+import { API_URL } from '../../Api/api';
 import { logout } from '../../Store/reducers/Auth/authSlice';
 import { setSelectedCategory } from '../../Store/reducers/SelectedCategory/selectedCategorySlice';
+import { useRef } from 'react';
+import Footer from '../Footer/Footer';
 
 const AppLayout = ({ children }) => {
+  const scrollRef = useRef();
   const user = useSelector(selectUser);
   const isSidebarOpen = useSelector(selectSidebar);
   const dispatch = useDispatch();
@@ -75,6 +78,16 @@ const AppLayout = ({ children }) => {
     }
   };
 
+  const scrollTop = () => {
+    try {
+      if (scrollRef && scrollRef.current) {
+        scrollRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const cols = [
     {
       categoryName: 'Shop by Department',
@@ -106,7 +119,7 @@ const AppLayout = ({ children }) => {
         collapsed: { mobile: !isSidebarOpen, desktop: !isSidebarOpen },
       }}
     >
-      <AppShell.Header>
+      <AppShell.Header className="border-amazon_light">
         <Group h={'100%'}>
           <Box className="w-full h-full bg-amazon_light p-0 text-white">
             <Navbar />
@@ -162,7 +175,14 @@ const AppLayout = ({ children }) => {
           </div>
         </AppShell.Section>
       </AppShell.Navbar>
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main>
+        <ScrollArea viewportRef={scrollRef} scrollbarSize={15} h={'calc(100vh - 100px)'}>
+          <div className="bg-white border border-white">{children}</div>
+          <div className="bg-amazon_light">
+            <Footer scrollTop={scrollTop} />
+          </div>
+        </ScrollArea>
+      </AppShell.Main>
     </AppShell>
   );
 };

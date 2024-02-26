@@ -4,14 +4,22 @@ import { MapPin, ShoppingCart } from 'lucide-react';
 import Searchbar from './Searchbar.jsx';
 import AccountOrders from './AccountOrders.jsx';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setSelectedCategory } from '../../Store/reducers/SelectedCategory/selectedCategorySlice.js';
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleNavigateHome = () => {
+    navigate('/');
+    dispatch(setSelectedCategory(null));
+  };
   return (
     <div className="h-[60%] bg-darkblue-1000 text-white">
       <nav className="flex h-full gap-2 p-1 px-3">
         <div
-          onClick={() => navigate('/')}
+          onClick={handleNavigateHome}
           className="flex rounded-sm items-center px-2 pt-3 hover:outline hover:outline-1 cursor-pointer"
         >
           <img className="w-24" src={logo} alt="logoDark" />
