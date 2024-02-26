@@ -3,9 +3,12 @@ import { useParams } from 'react-router-dom';
 import useProducts from '../../Hooks/useProducts';
 import ProductCard from '../../Components/Card/ProductCard';
 import { Pagination } from '@mantine/core';
+import { useSelector } from 'react-redux';
+import { selectSearchQuery } from '../../Store/reducers/searchProduct/searchProduct.selector';
 
 const SearchPage = () => {
   const { id } = useParams();
+  const searchQuery = useSelector(selectSearchQuery);
 
   const [isPage, setIsPage] = useState(1);
   const [filters, setFilters] = useState({
@@ -29,9 +32,10 @@ const SearchPage = () => {
   useEffect(() => {
     setFilters({
       ...filters,
+      name: searchQuery,
       categoryId: id,
     });
-  }, [id]);
+  }, [id, searchQuery]);
 
   return (
     <section>
