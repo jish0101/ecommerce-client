@@ -6,6 +6,7 @@ import { ACCOUNT_TYPES } from './Lib/Constants';
 
 const Home = lazy(() => import('./Pages/home/Home'));
 const SearchPage = lazy(() => import('./Pages/search/SearchPage.jsx'));
+const ProductPage = lazy(() => import('./Pages/product/ProductPage.jsx'));
 const NotFound = lazy(() => import('./Components/Layout/NotFound'));
 const UnAuthorized = lazy(() => import('./Components/Layout/UnAuthorized'));
 const PrivateRoute = lazy(() => import('./Store/reducers/Auth/PrivateRoute'));
@@ -25,7 +26,6 @@ function App() {
         {/* Pass roles array to this PrivateRoute component with account type that is allowed. */}
         {/* Not passing roles will allow every logged in user to that route */}
 
-        {/* <Route element={<PersistLogin />}> */}
         <Route
           element={
             <PrivateRoute
@@ -40,9 +40,9 @@ function App() {
           <Route path="/user-profile" element={<AccountProfile />} />
           <Route path="/search-page/:id" element={<SearchPage />} />
           <Route path="/search-page" element={<SearchPage />} />
+          <Route path="/product-page/:id" element={<ProductPage />} />
         </Route>
       </Route>
-      {/* </Route> */}
       <Route element={<SuspenseWrapper />}>
         <Route path="/unauthorized" element={<UnAuthorized />} />
         <Route path="/signup" element={<Signup />} />

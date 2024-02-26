@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import useAxiosPrivate from './useAxiosPrivate';
 import { useQuery } from '@tanstack/react-query';
 import { API_KEYS, API_URL } from '../Api/api';
@@ -6,18 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectToken } from '../Store/reducers/Auth/authSelector';
 import { endLoading, startLoading } from '../Store/reducers/globalLoader/loaderSlice';
 
-const useProductCategories = ({ filters, isPage }) => {
+const useProducts = ({ filters, isPage }) => {
   const api = useAxiosPrivate();
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
-  const [productCateogry, setProductCategories] = useState([]);
-  const {
-    data: productCateogryData,
-    isFetching,
-    error,
-    refetch,
-  } = useQuery({
-    queryKey: [API_KEYS.productCateogry],
+  const { data, isFetching, error, refetch } = useQuery({
+    queryKey: [API_KEYS.products],
     queryFn: getProductCategories,
     refetchOnWindowFocus: false,
     staleTime: Infinity,
@@ -27,7 +21,7 @@ const useProductCategories = ({ filters, isPage }) => {
   async function getProductCategories() {
     try {
       let endPoint = '';
-      let url = API_URL.productCateogry;
+      let url = API_URL.products;
 
       if (isPage) {
         endPoint = `${url}?page=${isPage}&`;
@@ -55,22 +49,6 @@ const useProductCategories = ({ filters, isPage }) => {
 
   useEffect(() => {
     try {
-      if (productCateogryData) {
-        const { data, status } = productCateogryData;
-        if (data && status) {
-          const res = data.map(({ name, _id }) => {
-            return { label: name, value: _id };
-          });
-          setProductCategories(res);
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [productCateogryData]);
-
-  useEffect(() => {
-    try {
       if (isFetching) {
         dispatch(startLoading());
       } else {
@@ -81,7 +59,7 @@ const useProductCategories = ({ filters, isPage }) => {
     }
   }, [isFetching]);
 
-  return { data: productCateogry, isFetching, error, refetch };
+  return { data, isFetching, error, refetch };
 };
 
-export default useProductCategories;
+export default useProducts;

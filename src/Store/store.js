@@ -3,6 +3,7 @@ import authReducer, { authKey } from './reducers/Auth/authSlice.js';
 import loaderReducer from './reducers/globalLoader/loaderSlice.js';
 import sidebarReducer from './reducers/sidebar/sidebar.js';
 import selectedCategorySliceReducer from './reducers/SelectedCategory/selectedCategorySlice.js';
+import searchProductReducer from './reducers/searchProduct/searchProduct.js';
 import storage from 'redux-persist/lib/storage';
 import {
   persistStore,
@@ -28,6 +29,7 @@ export const store = configureStore({
     loader: loaderReducer,
     sidebar: sidebarReducer,
     selectedCategory: selectedCategorySliceReducer,
+    searchQuery: searchProductReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

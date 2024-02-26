@@ -7,18 +7,19 @@ import { Link } from 'react-router-dom';
 import useProductCategories from '../../Hooks/useProductCategories';
 import { selectSidebar } from '../../Store/reducers/sidebar/sidebar.selector';
 import { toggleSidebar } from '../../Store/reducers/sidebar/sidebar';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import useAxiosPrivate from '../../Hooks/useAxiosPrivate';
-import { API_KEYS, API_URL } from '../../Api/api';
+import { API_URL } from '../../Api/api';
 import { logout } from '../../Store/reducers/Auth/authSlice';
 import { setSelectedCategory } from '../../Store/reducers/SelectedCategory/selectedCategorySlice';
+import { useRef } from 'react';
+import Footer from '../Footer/Footer';
 
 const AppLayout = ({ children }) => {
+  const scrollRef = useRef();
   const user = useSelector(selectUser);
   const isSidebarOpen = useSelector(selectSidebar);
   const dispatch = useDispatch();
-
-  const queryClient = useQueryClient();
   const api = useAxiosPrivate();
 
   const logoutFunc = async () => {
@@ -28,9 +29,6 @@ const AppLayout = ({ children }) => {
 
   const { mutateAsync: logoutApi, isPending: isLoadingLogout } = useMutation({
     mutationFn: logoutFunc,
-    onSuccess: () => {
-      queryClient.invalidateQueries(API_KEYS.logout);
-    },
   });
 
   const { data: categoryData } = useProductCategories({
@@ -42,7 +40,6 @@ const AppLayout = ({ children }) => {
 
   const handleSignOut = async () => {
     try {
-      console.log('hello');
       await logoutApi();
       dispatch(logout());
     } catch (error) {
@@ -72,19 +69,40 @@ const AppLayout = ({ children }) => {
     }
   };
 
+  const handleSidebarLabelClick = (linkDetails) => {
+    if (linkDetails.onClick) {
+      return linkDetails.onClick();
+    } else {
+      dispatch(setSelectedCategory(getSelectedCategory(linkDetails)));
+      dispatch(toggleSidebar());
+    }
+  };
+
+  const scrollTop = () => {
+    try {
+      if (scrollRef && scrollRef.current) {
+        scrollRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const cols = [
     {
-      cateogryName: 'Shop by Department',
+      categoryName: 'Shop by Department',
       cateogryLinks: categoryDataLinks,
     },
     {
-      cateogryName: 'Settings',
+      categoryName: 'Settings',
       cateogryLinks: [
         {
+          id: 0,
           label: 'Your Account',
           link: '/user-account',
         },
         {
+          id: 1,
           label: 'Sign out',
           onClick: handleSignOut,
         },
@@ -94,16 +112,15 @@ const AppLayout = ({ children }) => {
 
   return (
     <AppShell
-      header={{ height: 100 }}
+      header={{ height: 95 }}
       navbar={{
         width: 350,
         breakpoint: 'sm',
         collapsed: { mobile: !isSidebarOpen, desktop: !isSidebarOpen },
       }}
-      h={'100%'}
     >
-      <AppShell.Header>
-        <Group h={'100%'} w={'100%'}>
+      <AppShell.Header className="border-amazon_light">
+        <Group h={'100%'}>
           <Box className="w-full h-full bg-amazon_light p-0 text-white">
             <Navbar />
             <div className="flex justify-start px-1">
@@ -133,21 +150,14 @@ const AppLayout = ({ children }) => {
             <ul>
               {cols.map((col) => {
                 return (
-                  <div key={col.cateogryName} className="border-b py-2">
-                    <h2 className="font-semibold text-xl p-2 pl-8">{col.cateogryName}</h2>
+                  <div key={col.categoryName} className="border-b py-2">
+                    <h2 className="font-semibold text-xl p-2 pl-8">{col.categoryName}</h2>
                     {col.cateogryLinks.map((linkDetails) => {
                       return (
                         <li
-                          onClick={() => {
-                            if (linkDetails.onClick) {
-                              return linkDetails.onClick();
-                            } else {
-                              dispatch(setSelectedCategory(getSelectedCategory(linkDetails)));
-                              dispatch(toggleSidebar());
-                            }
-                          }}
-                          className="flex"
                           key={linkDetails.id}
+                          onClick={() => handleSidebarLabelClick(linkDetails)}
+                          className="flex"
                         >
                           <Link
                             className="hover:bg-amazon_gray p-2 pl-8 flex-1"
@@ -165,7 +175,14 @@ const AppLayout = ({ children }) => {
           </div>
         </AppShell.Section>
       </AppShell.Navbar>
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main>
+        <ScrollArea viewportRef={scrollRef} scrollbarSize={15} h={'calc(100vh - 100px)'}>
+          <div className="bg-white border border-white">{children}</div>
+          <div className="bg-amazon_light">
+            <Footer scrollTop={scrollTop} />
+          </div>
+        </ScrollArea>
+      </AppShell.Main>
     </AppShell>
   );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate, useLocation, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { selectIsAuth, selectIsTrusted, selectRole } from './authSelector';
+import { selectIsAuth, selectRole } from './authSelector';
 
 function PrivateRoute({ roles }) {
   const role = useSelector(selectRole);
