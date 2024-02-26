@@ -17,8 +17,6 @@ const AppLayout = ({ children }) => {
   const user = useSelector(selectUser);
   const isSidebarOpen = useSelector(selectSidebar);
   const dispatch = useDispatch();
-
-  const queryClient = useQueryClient();
   const api = useAxiosPrivate();
 
   const logoutFunc = async () => {
@@ -28,9 +26,6 @@ const AppLayout = ({ children }) => {
 
   const { mutateAsync: logoutApi, isPending: isLoadingLogout } = useMutation({
     mutationFn: logoutFunc,
-    onSuccess: () => {
-      queryClient.invalidateQueries(API_KEYS.logout);
-    },
   });
 
   const { data: categoryData } = useProductCategories({
@@ -42,7 +37,6 @@ const AppLayout = ({ children }) => {
 
   const handleSignOut = async () => {
     try {
-      console.log('hello');
       await logoutApi();
       dispatch(logout());
     } catch (error) {

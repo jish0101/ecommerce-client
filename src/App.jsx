@@ -25,7 +25,6 @@ function App() {
         {/* Pass roles array to this PrivateRoute component with account type that is allowed. */}
         {/* Not passing roles will allow every logged in user to that route */}
 
-        {/* <Route element={<PersistLogin />}> */}
         <Route
           element={
             <PrivateRoute
@@ -42,7 +41,6 @@ function App() {
           <Route path="/search-page" element={<SearchPage />} />
         </Route>
       </Route>
-      {/* </Route> */}
       <Route element={<SuspenseWrapper />}>
         <Route path="/unauthorized" element={<UnAuthorized />} />
         <Route path="/signup" element={<Signup />} />

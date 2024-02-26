@@ -16,6 +16,7 @@ export const API_URL = {
   logout: 'auth/logout',
   signup: 'user/',
   productCateogry: 'product-category/',
+  products: 'products/',
 };
 
 export const API_KEYS = {
@@ -23,6 +24,7 @@ export const API_KEYS = {
   logout: 'auth/logout',
   signup: 'user/',
   productCateogry: 'product-category/',
+  products: 'products/',
 };
 
 /**
