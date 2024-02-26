@@ -16,7 +16,7 @@ const ProductCard = ({ data, to }) => {
       className="grid gap-3 cursor-pointer shadow-sm outline outline-1 outline-gray-200 p-3 rounded-md hover:scale-105 transition-transform duration-300"
     >
       <div className="rounded-md overflow-hidden">
-        <img className="flex max-w-[100%] object-cover" src={image} alt={name} />
+        <img loading="lazy" className="flex max-w-[100%] object-cover" src={image} alt={name} />
       </div>
       <h3 className="capitalize font-semibold hover:text-amazon_yellow">{name}</h3>
       <div className="flex gap-1">
