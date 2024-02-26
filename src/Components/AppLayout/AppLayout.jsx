@@ -68,17 +68,19 @@ const AppLayout = ({ children }) => {
 
   const cols = [
     {
-      cateogryName: 'Shop by Department',
+      categoryName: 'Shop by Department',
       cateogryLinks: categoryDataLinks,
     },
     {
-      cateogryName: 'Settings',
+      categoryName: 'Settings',
       cateogryLinks: [
         {
+          id: 0,
           label: 'Your Account',
           link: '/user-account',
         },
         {
+          id: 1,
           label: 'Sign out',
           onClick: handleSignOut,
         },
@@ -126,12 +128,15 @@ const AppLayout = ({ children }) => {
           <div>
             <ul>
               {cols.map((col) => {
+                console.log('col.categoryName', col.categoryName);
                 return (
-                  <div key={col.cateogryName} className="border-b py-2">
-                    <h2 className="font-semibold text-xl p-2 pl-8">{col.cateogryName}</h2>
+                  <div key={col.categoryName} className="border-b py-2">
+                    <h2 className="font-semibold text-xl p-2 pl-8">{col.categoryName}</h2>
                     {col.cateogryLinks.map((linkDetails) => {
+                      console.log('linkDetails', linkDetails.id);
                       return (
                         <li
+                          key={linkDetails.id}
                           onClick={() => {
                             if (linkDetails.onClick) {
                               return linkDetails.onClick();
@@ -141,7 +146,6 @@ const AppLayout = ({ children }) => {
                             }
                           }}
                           className="flex"
-                          key={linkDetails.id}
                         >
                           <Link
                             className="hover:bg-amazon_gray p-2 pl-8 flex-1"
