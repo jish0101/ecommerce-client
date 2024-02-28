@@ -176,7 +176,12 @@ const AppLayout = ({ children }) => {
         </AppShell.Section>
       </AppShell.Navbar>
       <AppShell.Main>
-        <ScrollArea viewportRef={scrollRef} scrollbarSize={15} h={'calc(100vh - 100px)'}>
+        <ScrollArea
+          viewportRef={scrollRef}
+          scrollbarSize={15}
+          h={'calc(100vh - 100px)'}
+          offsetScrollbars
+        >
           <div className="bg-white border border-white">{children}</div>
           <div className="bg-amazon_light">
             <Footer scrollTop={scrollTop} />

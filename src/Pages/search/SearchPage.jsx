@@ -22,12 +22,13 @@ const SearchPage = () => {
   const products = productsData?.data;
   const pagination = productsData?.pagination;
 
-  console.log('products => ', products);
+  useEffect(() => {
+    refetchProducts();
+  }, [isPage, filters, id]);
 
   useEffect(() => {
     setIsPage(1);
-    refetchProducts();
-  }, [isPage, filters, id]);
+  }, [filters?.categoryId]);
 
   useEffect(() => {
     setFilters({

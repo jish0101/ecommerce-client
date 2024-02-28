@@ -45,6 +45,7 @@ export default {
         amazon_light: '#232F3E',
         amazon_gray: '#eaeded',
         amazon_lighter: '#37475A',
+        amazon_yellow_dark: '#f7ca00',
         amazon_yellow: '#febd69',
         orange_100: '#f3a847',
         whiteText: '#ffffff',

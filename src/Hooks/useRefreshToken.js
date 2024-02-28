@@ -30,7 +30,7 @@ const useRefreshToken = () => {
     } catch (error) {
       console.log('Refresh Error => ', error);
       const status = error?.response?.status;
-      if (status === 403) {
+      if (status === 403 || status === 401) {
         dispatch(logout());
         await logoutApi();
       }
