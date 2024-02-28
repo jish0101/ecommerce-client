@@ -1,30 +1,35 @@
 import React, { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosPrivate from '../../Hooks/useAxiosPrivate';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectSelectedCategory } from '../../Store/reducers/SelectedCategory/selectedCategory.selector';
 import { Breadcrumbs, Image, Select } from '@mantine/core';
 import { formatNumber } from '../../Lib/Utils';
 import { MapPin } from 'lucide-react';
+import { addToCart } from '../../Store/reducers/cartReducer/cartReducer';
 
 const ProductPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const axios = useAxiosPrivate();
   const selectedCategory = useSelector(selectSelectedCategory);
   const [selectedQuantity, setSelectedQuantity] = useState({ label: `Quantity: 1`, value: `1` });
   const { data: productData, isFetching: isLoading } = useQuery({
     queryKey: [id],
-    queryFn: async () => {
-      const { data, status } = await axios.get(`products?id=${id}`);
-      if (status) {
-        return data?.data;
-      }
-    },
+    queryFn: fetchProductData,
     staleTime: Infinity,
     retryDelay: Infinity,
     refetchOnWindowFocus: false,
   });
+
+  async function fetchProductData() {
+    const { data, status } = await axios.get(`products?id=${id}`);
+    if (status) {
+      return data?.data;
+    }
+  }
 
   const breadCrumData = [
     {
@@ -35,24 +40,35 @@ const ProductPage = () => {
       title: productData?.name,
       to: '#',
     },
-  ].map(({ title, to }) => (
-    <Link key={title} className="text-gray-500 text-sm capitalize" to={to}>
-      {title}
-    </Link>
-  ));
+  ];
 
   const quantityOptions = Array.from({ length: 50 }).map((_, i) => ({
     label: `Quantity: ${i + 1}`,
     value: `${i + 1}`,
   }));
 
-  console.log('productData', productData, quantityOptions);
+  const addToCartHandler = () => {
+    if (selectedQuantity && selectedQuantity?.value) {
+      const payload = {
+        item: productData,
+        quantity: selectedQuantity?.value,
+      };
+      dispatch(addToCart(payload));
+      navigate('/cart');
+    }
+  };
+
+  // console.log('productData', productData, quantityOptions);
 
   return (
     <section className="w-full">
       <div className="mx-4 pt-2">
         <Breadcrumbs separator=">" separatorMargin="xs">
-          {breadCrumData}
+          {breadCrumData.map(({ title, to }) => (
+            <Link key={title} className="text-gray-500 text-sm capitalize" to={to}>
+              {title}
+            </Link>
+          ))}
         </Breadcrumbs>
       </div>
       <div className="grid lg:grid-cols-6 w-full p-4">
@@ -94,10 +110,15 @@ const ProductPage = () => {
               data={quantityOptions}
               value={selectedQuantity?.value || null}
               onChange={(_, opt) => setSelectedQuantity(opt)}
+              placeholder="Select a quantity"
             />
           </div>
           <div className="my-2 flex flex-col gap-3">
-            <button className="w-full bg-amazon_yellow_dark rounded-full hover:opacity-90 p-1">
+            <button
+              onClick={addToCartHandler}
+              disabled={!selectedQuantity}
+              className="w-full bg-amazon_yellow_dark rounded-full disabled:cursor-not-allowed disabled:opacity-80 hover:opacity-90 p-1"
+            >
               Add to cart
             </button>
             <button className="w-full bg-orange_100 rounded-full hover:opacity-90 p-1">

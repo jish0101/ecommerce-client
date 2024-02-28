@@ -4,12 +4,18 @@ import { MapPin, ShoppingCart } from 'lucide-react';
 import Searchbar from './Searchbar.jsx';
 import AccountOrders from './AccountOrders.jsx';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedCategory } from '../../Store/reducers/SelectedCategory/selectedCategorySlice.js';
+import {
+  selectCartItems,
+  selectCartItemsCount,
+} from '../../Store/reducers/cartReducer/cart.selector.js';
+import { Indicator } from '@mantine/core';
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const cartItemsCount = useSelector(selectCartItemsCount);
 
   const handleNavigateHome = () => {
     navigate('/');
@@ -46,7 +52,12 @@ const Navbar = () => {
           to={'/cart'}
           className="flex min-w-fit leading-3 justify-center items-end rounded-sm hover:outline hover:outline-1 p-2"
         >
-          <ShoppingCart size={30} />
+          <div className="flex flex-col justify-center items-center">
+            {/* <span className="text-orange_100">{cartItemsCount}</span> */}
+            <Indicator color="#f3a847" label={cartItemsCount} size={15}>
+              <ShoppingCart size={30} />
+            </Indicator>
+          </div>
           <span className="self-end font-semibold pb-1">Cart</span>
         </Link>
       </nav>
