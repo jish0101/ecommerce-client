@@ -5,12 +5,7 @@ export const selectAllStatus = (state) => state.cart.selectAll;
 export const selectCartItemsCount = (state) => {
   const items = state.cart.cartItems;
   if (items) {
-    return items.reduce((acc, item) => {
-      if (item.selected) {
-        return acc + Number(item.quantity);
-      }
-      return acc;
-    }, 0);
+    return items.reduce((acc, item) => acc + Number(item.quantity), 0);
   }
   return 0;
 };
