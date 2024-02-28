@@ -4,6 +4,7 @@ import loaderReducer from './reducers/globalLoader/loaderSlice.js';
 import sidebarReducer from './reducers/sidebar/sidebar.js';
 import selectedCategorySliceReducer from './reducers/SelectedCategory/selectedCategorySlice.js';
 import searchProductReducer from './reducers/searchProduct/searchProduct.js';
+import cartReducer from './reducers/cartReducer/cartReducer.js';
 import storage from 'redux-persist/lib/storage';
 import {
   persistStore,
@@ -30,6 +31,7 @@ export const store = configureStore({
     sidebar: sidebarReducer,
     selectedCategory: selectedCategorySliceReducer,
     searchQuery: searchProductReducer,
+    cart: cartReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
