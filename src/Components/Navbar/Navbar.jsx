@@ -6,10 +6,7 @@ import AccountOrders from './AccountOrders.jsx';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedCategory } from '../../Store/reducers/SelectedCategory/selectedCategorySlice.js';
-import {
-  selectCartItems,
-  selectCartItemsCount,
-} from '../../Store/reducers/cartReducer/cart.selector.js';
+import { selectCartItemsCount } from '../../Store/reducers/cartReducer/cart.selector.js';
 import { Indicator } from '@mantine/core';
 
 const Navbar = () => {
