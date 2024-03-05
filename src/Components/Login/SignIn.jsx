@@ -6,10 +6,11 @@ import { notifications } from '@mantine/notifications';
 import { logoDark } from '../../Assets/index';
 import { selectIsAuth } from '../../Store/reducers/Auth/authSelector';
 import { useDispatch, useSelector } from 'react-redux';
-import { API_KEYS, API_URL, usePostFetch } from '../../Api/api';
+import { API_KEYS, API_URL, api } from '../../Api/api';
 import { signin } from '../../Store/reducers/Auth/authSlice';
 import { Check, XCircle } from 'lucide-react';
 import '@mantine/notifications/styles.css';
+import { useMutation } from '@tanstack/react-query';
 
 function SignIn() {
   const location = useLocation();
@@ -25,10 +26,19 @@ function SignIn() {
     formState: { errors },
   } = form;
 
-  const { mutateAsync: login, isPending: isLoadingLogin } = usePostFetch({
-    queryKey: API_KEYS.login,
-    url: API_URL.login,
+  const { mutateAsync: login, isPending: isLoadingLogin } = useMutation({
+    mutationFn: loginApi,
+    mutationKey: [API_KEYS.login],
   });
+
+  async function loginApi({ body }) {
+    try {
+      const response = await api.post(API_URL.login, body);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const formSubmit = async (body) => {
     try {
