@@ -17,6 +17,8 @@ export const API_URL = {
   signup: 'user/',
   productCateogry: 'product-category/',
   products: 'products/',
+  verifyEmail: 'auth/verify-email',
+  resendOtp: 'auth/send-otp',
 };
 
 export const API_KEYS = {
@@ -25,6 +27,8 @@ export const API_KEYS = {
   signup: 'user/',
   productCateogry: 'product-category/',
   products: 'products/',
+  verifyEmail: 'auth/verify-email',
+  resendOtp: 'auth/send-otp',
 };
 
 /**
