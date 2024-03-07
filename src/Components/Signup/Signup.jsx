@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { logoDark } from '../../Assets/index';
 // import { signup } from '../../Store/reducers/Auth/authSlice';
 // import { DevTool } from '@hookform/devtools';
@@ -14,6 +14,7 @@ import { Check, XCircle } from 'lucide-react';
 import { API_KEYS, API_URL, usePostForm } from '../../Api/api';
 
 function Signup() {
+  // const [successMsg, setSuccessMsg] = useState('');
   const isAuthenticatedRedux = useSelector(selectIsAuth);
   const navigate = useNavigate();
   const { mutateAsync: signup, isPending: isLoadingSignup } = usePostForm({
@@ -95,6 +96,14 @@ function Signup() {
     }
   }, [isAuthenticatedRedux]);
 
+  // useEffect(() => {
+  //   setSuccessMsg('Account created Successfully!');
+  //   const time = setTimeout(() => {
+  //     navigate('/verify');
+  //   }, 2000);
+  //   return () => clearTimeout(time);
+  // }, []);
+
   return (
     <div className="w-full my-10">
       <div className="w-full pb-10 shadow-md">
@@ -175,6 +184,11 @@ function Signup() {
               >
                 {false ? <Loader color="#ffffff" size={'md'} type="dots" /> : <span>Continue</span>}
               </button>
+              {/* {successMsg && (
+                <div className="text-green-600 text-xs font-semibold tracking-wide flex items-center gap-2 -mt-1.5">
+                  {successMsg}
+                </div>
+              )} */}
               <p className="text-sm text-black leadng-4 mt-4">
                 By creating an account, you agree with amazon's{' '}
                 <span className="text-blue-600">Condition of use</span> and{' '}
