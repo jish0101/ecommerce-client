@@ -7,16 +7,17 @@ import { Check, XCircle } from 'lucide-react';
 import { logoDark } from '../../Assets/index';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { notifications } from '@mantine/notifications';
-import { API_KEYS, API_URL, usePostForm } from '../../Api/api';
+import { API_KEYS, API_URL, api } from '../../Api/api';
 import { selectIsAuth } from '../../Store/reducers/Auth/authSelector';
 import { useNavigate, Link, createSearchParams } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
 
 function Signup() {
-  const isAuthenticatedRedux = useSelector(selectIsAuth);
   const navigate = useNavigate();
-  const { mutateAsync: signup, isPending: isLoadingSignup } = usePostForm({
-    queryKey: API_KEYS.signup,
-    url: API_URL.signup,
+  const isAuthenticatedRedux = useSelector(selectIsAuth);
+  const { mutateAsync: signup, isPending: isLoadingSignup } = useMutation({
+    mutationFn: signupApi,
+    mutationKey: [API_KEYS.signup],
   });
   const validationSchema = yup.object().shape({
     name: yup.string().required('Name is required'),
@@ -37,6 +38,15 @@ function Signup() {
     formState: { errors },
   } = form;
 
+  async function signupApi({ body }) {
+    try {
+      const { data } = await api.post(API_URL.signup, body);
+      return data;
+    } catch (error) {
+      return error;
+    }
+  }
+
   const formSubmit = async (bodyData) => {
     try {
       const { cPassword, ...filteredBody } = bodyData;
@@ -46,8 +56,7 @@ function Signup() {
         formData.append(key, value);
       });
 
-      const res = await signup({ body: formData });
-      const { status, message, data } = res.data;
+      const { status, message } = await signup({ body: formData });
 
       if (status) {
         notifications.show({
@@ -72,7 +81,7 @@ function Signup() {
       }
     } catch (err) {
       const error = err?.response;
-
+      console.log(err);
       notifications.show({
         id: 'signup',
         withCloseButton: true,
@@ -89,7 +98,6 @@ function Signup() {
           }
         },
       });
-      console.log(err);
     }
   };
 
@@ -147,7 +155,7 @@ function Signup() {
                 </label>
 
                 <input
-                  className="w-full  py-1 border border-zinc-400 px-2 text-base rounded-sm outline-none focus-within:border-[#e77600] focus-within:shadow-amazonInput duration-100"
+                  className="w-full py-1 border border-zinc-400 px-2 text-base rounded-sm outline-none focus-within:border-[#e77600] focus-within:shadow-amazonInput duration-100"
                   type="password"
                   id="password"
                   {...register('password')}
@@ -162,7 +170,7 @@ function Signup() {
                   Confirm Password
                 </label>{' '}
                 <input
-                  className="w-full  py-2 border border-zinc-400 px-3 text-base rounded-sm outline-none focus-within:border-[#e77600] focus-within:shadow-amazonInput duration-100"
+                  className="w-full py-1 border border-zinc-400 px-2 text-base rounded-sm outline-none focus-within:border-[#e77600] focus-within:shadow-amazonInput duration-100"
                   type="password"
                   id="cpassword"
                   {...register('cPassword')}
@@ -174,16 +182,15 @@ function Signup() {
               </div>
               <button
                 type="submit"
-                disabled={false}
+                disabled={isLoadingSignup}
                 className="w-full py-1.5 flex items-center gap-1 justify-center text-sm font-normal rounded-sm bg-gradient-to-t from-[#f7dfa5] to-[#f0c14b] hover:bg-gradient-to-b border disabled:opacity-85 disabled:cursor-not-allowed border-zinc-400 active:border-yellow-800 active:shadow-amazonInput"
               >
-                {false ? <Loader color="#ffffff" size={'md'} type="dots" /> : <span>Continue</span>}
+                {isLoadingSignup ? (
+                  <Loader color="#ffffff" size={'md'} type="dots" />
+                ) : (
+                  <span>Continue</span>
+                )}
               </button>
-              {/* {successMsg && (
-                <div className="text-green-600 text-xs font-semibold tracking-wide flex items-center gap-2 -mt-1.5">
-                  {successMsg}
-                </div>
-              )} */}
               <p className="text-sm text-black leadng-4 mt-4">
                 By creating an account, you agree with amazon's{' '}
                 <span className="text-blue-600">Condition of use</span> and{' '}

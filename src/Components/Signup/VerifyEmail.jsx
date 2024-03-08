@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { logoDark } from '../../Assets';
-import { PinInput, Text } from '@mantine/core';
-import { API_URL } from '../../Api/api';
+import { Loader, PinInput, Text } from '@mantine/core';
+import { API_URL, api } from '../../Api/api';
 import useAxiosPrivate from '../../Hooks/useAxiosPrivate';
 import { notifications } from '@mantine/notifications';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -9,12 +9,13 @@ import { Check, XCircle } from 'lucide-react';
 
 function VerifyEmail() {
   const data = { otp: '' };
-  const api = useAxiosPrivate();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const email = searchParams.get('email');
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [inputData, setInputData] = useState(data);
-  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleData = (n) => {
     setInputData({ otp: n });
@@ -22,8 +23,8 @@ function VerifyEmail() {
 
   const functVerify = async () => {
     try {
-      const email = searchParams.get('email');
-      if (inputData.otp && inputData.otp.length === 6 && email) {
+      if (!loading && inputData.otp && inputData.otp.length === 6 && email) {
+        setLoading(true);
         const { data } = await api.post(API_URL.verifyEmail, {
           email,
           otp: inputData.otp,
@@ -60,6 +61,8 @@ function VerifyEmail() {
         loading: false,
       });
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
   const functresend = async () => {
@@ -103,7 +106,7 @@ function VerifyEmail() {
             <h2 className="font-titleFont text-3xl font-normal mb-4">Verification Required</h2>
             <p>
               Complete this verification step. We've sent an OTP to
-              <span className="font-bold"> {searchParams.get('email')}</span>.
+              <span className="font-bold"> {email}</span>.
             </p>
             <div className="grid gap-2 my-2">
               <label className="font-bold">Enter OTP</label>
@@ -123,9 +126,16 @@ function VerifyEmail() {
               <button
                 onClick={functVerify}
                 type="button"
-                className=" w-full focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-md px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
+                disabled={loading}
+                className="w-full focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-md px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900 disabled:opacity-85 disabled:cursor-not-allowed"
               >
-                Continue
+                {loading ? (
+                  <div className="flex justify-center items-center">
+                    <Loader color="#ffffff" size={'sm'} type="dots" />
+                  </div>
+                ) : (
+                  <span>Continue</span>
+                )}
               </button>
             </div>
 
