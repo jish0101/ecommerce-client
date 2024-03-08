@@ -1,50 +1,73 @@
 import React, { useState, useEffect } from 'react';
 import { logoDark } from '../../Assets';
-import { useSelector } from 'react-redux';
-import { PinInput } from '@mantine/core';
-import { selectUser } from '../../Store/reducers/Auth/authSelector';
-import { API_KEYS, API_URL } from '../../Api/api';
+import { PinInput, Text } from '@mantine/core';
+import { API_URL } from '../../Api/api';
 import useAxiosPrivate from '../../Hooks/useAxiosPrivate';
+import { notifications } from '@mantine/notifications';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Check, XCircle } from 'lucide-react';
 
 function VerifyEmail() {
+  const data = { otp: '' };
+  const api = useAxiosPrivate();
+  const navigate = useNavigate();
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
-  const data = { otp: '' };
   const [inputData, setInputData] = useState(data);
-  const api = useAxiosPrivate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleData = (e) => {
-    setInputData({ ...inputData, [e.target.name]: e.target.value });
-    console.log(e.target.name);
+  const handleData = (n) => {
+    setInputData({ otp: n });
   };
-  const user = useSelector(selectUser);
-
-  console.log(user);
 
   const functVerify = async () => {
-    console.log('helo');
-    const res = await api.post(
-      API_URL.verifyEmail,
-      inputData,
-      {
-        email: `${email}`,
-      },
-      { 'Content-Type': 'application/json' },
-    );
-    console.log(res);
-    return res;
+    try {
+      const email = searchParams.get('email');
+      if (inputData.otp && inputData.otp.length === 6 && email) {
+        const { data } = await api.post(API_URL.verifyEmail, {
+          email,
+          otp: inputData.otp,
+        });
+        if (data) {
+          const { message } = data;
+
+          notifications.show({
+            id: 'verify',
+            withCloseButton: true,
+            autoClose: 2000,
+            title: <h4 className="font-bold text-lg">Welcome</h4>,
+            message: <p className="text-base">{message}</p>,
+            color: 'yellow',
+            withBorder: true,
+            radius: 'lg',
+            icon: <Check size={40} className="p-1" key={'login'} />,
+            loading: false,
+          });
+          return navigate('/signin');
+        }
+      }
+    } catch (err) {
+      const error = err?.response?.data;
+      console.log('🚀 ~ functVerify ~ error:', error);
+      notifications.show({
+        id: 'verify-error',
+        withCloseButton: true,
+        autoClose: 2000,
+        title: <Text className="font-bold text-lg">Oops!</Text>,
+        message: <Text className="text-base">{error.message}</Text>,
+        color: 'red',
+        icon: <XCircle size={50} key={'login'} />,
+        loading: false,
+      });
+      console.error(err);
+    }
   };
   const functresend = async () => {
-    console.log('helo');
-    const res = await api.post(
-      API_URL.resendOtp,
-      {
-        email: `${email}`,
-      },
-      { 'Content-Type': 'application/json' },
-    );
-    console.log(res);
-    return res;
+    const { data } = await api.post(API_URL.resendOtp, {
+      email: `${email}`,
+    });
+
+    return data;
   };
 
   useEffect(() => {
@@ -79,20 +102,21 @@ function VerifyEmail() {
           <div className="w-full border border-zinc-200 p-6 mt-4">
             <h2 className="font-titleFont text-3xl font-normal mb-4">Verification Required</h2>
             <p>
-              To continue, complete this verification step.We've sent an OTP to the
-              <span className="font-bold"> {user?.email}</span> Please enter it below to complete
-              verification.
+              Complete this verification step. We've sent an OTP to
+              <span className="font-bold"> {searchParams.get('email')}</span>.
             </p>
-            <div className="my-2  ">
-              <label className="font-bold flex justify-center">Enter OTP</label>
+            <div className="grid gap-2 my-2">
+              <label className="font-bold">Enter OTP</label>
 
               <PinInput
-                className="flex justify-center mb-1"
+                size="md"
+                length={6}
                 name="otp"
+                className="mb-1"
+                placeholder="⭐"
+                type={'number'}
                 value={inputData.otp}
                 onChange={handleData}
-                length={6}
-                placeholder="*"
               />
             </div>
             <div className="my-5">
@@ -101,7 +125,7 @@ function VerifyEmail() {
                 type="button"
                 className=" w-full focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-md px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
               >
-                continue
+                Continue
               </button>
             </div>
 

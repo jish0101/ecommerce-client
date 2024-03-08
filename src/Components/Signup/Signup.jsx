@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { logoDark } from '../../Assets/index';
-// import { signup } from '../../Store/reducers/Auth/authSlice';
-// import { DevTool } from '@hookform/devtools';
-import { useSelector } from 'react-redux';
-import { selectIsAuth } from '../../Store/reducers/Auth/authSelector';
-import { useNavigate, Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { Loader } from '@mantine/core';
-import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { notifications } from '@mantine/notifications';
+import { Loader } from '@mantine/core';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 import { Check, XCircle } from 'lucide-react';
+import { logoDark } from '../../Assets/index';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { notifications } from '@mantine/notifications';
 import { API_KEYS, API_URL, usePostForm } from '../../Api/api';
+import { selectIsAuth } from '../../Store/reducers/Auth/authSelector';
+import { useNavigate, Link, createSearchParams } from 'react-router-dom';
 
 function Signup() {
-  // const [successMsg, setSuccessMsg] = useState('');
   const isAuthenticatedRedux = useSelector(selectIsAuth);
   const navigate = useNavigate();
   const { mutateAsync: signup, isPending: isLoadingSignup } = usePostForm({
@@ -65,7 +62,13 @@ function Signup() {
           icon: <Check size={40} className="p-1" key={'login'} />,
           loading: false,
         });
-        return navigate('/verify');
+        return navigate({
+          pathname: '/verify-user',
+          search: `?${createSearchParams({
+            name: bodyData.name,
+            email: bodyData.email,
+          })}`,
+        });
       }
     } catch (err) {
       const error = err?.response;
@@ -95,14 +98,6 @@ function Signup() {
       navigate('/');
     }
   }, [isAuthenticatedRedux]);
-
-  // useEffect(() => {
-  //   setSuccessMsg('Account created Successfully!');
-  //   const time = setTimeout(() => {
-  //     navigate('/verify');
-  //   }, 2000);
-  //   return () => clearTimeout(time);
-  // }, []);
 
   return (
     <div className="w-full my-10">
