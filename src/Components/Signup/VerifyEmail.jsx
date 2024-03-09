@@ -19,6 +19,7 @@ function VerifyEmail() {
 
   const handleData = (n) => {
     setInputData({ otp: n });
+    console.log('heelo');
   };
 
   const functVerify = async () => {
