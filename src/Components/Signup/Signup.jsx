@@ -39,12 +39,8 @@ function Signup() {
   } = form;
 
   async function signupApi({ body }) {
-    try {
-      const { data } = await api.post(API_URL.signup, body);
-      return data;
-    } catch (error) {
-      return error;
-    }
+    const { data } = await api.post(API_URL.signup, body);
+    return data;
   }
 
   const formSubmit = async (bodyData) => {
@@ -81,7 +77,6 @@ function Signup() {
       }
     } catch (err) {
       const error = err?.response;
-      console.log(err);
       notifications.show({
         id: 'signup',
         withCloseButton: true,
