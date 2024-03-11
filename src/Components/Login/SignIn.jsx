@@ -161,6 +161,12 @@ function SignIn() {
                   <span>Continue</span>
                 )}
               </button>
+              <Link to="/forgotpw">
+                <button className="text-sm text-blue-600  hover:text-orange-600 hover:underline underline-offset-1 cursor-pointer duration-100">
+                  Forgot Password
+                </button>
+              </Link>
+
               <div className="flex justify-center"></div>
               <p className="text-sm text-black leading-4 mt-4">
                 By creating an account, you agree with amazon's

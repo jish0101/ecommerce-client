@@ -17,6 +17,7 @@ const Orders = lazy(() => import('./Components/Orders/Orders'));
 const Account = lazy(() => import('./Components/Account/Account'));
 const AccountProfile = lazy(() => import('./Components/Account/AccountProfile'));
 const VerifyEmail = lazy(() => import('./Components/Signup/VerifyEmail.jsx'));
+const ForgotPw= lazy(() => import('./Components/Login/ForgotPw'));
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/verify-user" element={<VerifyEmail />} />
+        <Route path="/forgotpw" element={<ForgotPw />} />
       </Route>
     </Routes>
   );
