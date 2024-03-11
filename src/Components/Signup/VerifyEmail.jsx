@@ -50,6 +50,7 @@ function VerifyEmail() {
       }
     } catch (err) {
       const error = err?.response?.data;
+
       console.log('🚀 ~ functVerify ~ error:', error);
       notifications.show({
         id: 'verify-error',
@@ -67,11 +68,44 @@ function VerifyEmail() {
     }
   };
   const functresend = async () => {
-    const { data } = await api.post(API_URL.resendOtp, {
-      email: `${email}`,
-    });
+    try {
+      if (!loading && email) {
+        setLoading(true);
+        const res = await api.post(API_URL.resendOtp, {
+          email,
+        });
+        console.log(res);
+        notifications.show({
+          id: 'resendotp',
+          withCloseButton: true,
+          autoClose: 2000,
+          title: <h4 className="font-bold text-lg">OTP resend Successfully</h4>,
+          message: <p className="text-base">check otp</p>,
+          color: 'yellow',
+          withBorder: true,
+          radius: 'lg',
+          icon: <Check size={40} className="p-1" />,
+          loading: false,
+        });
+        return res;
+      }
+    } catch (err) {
+      const error = err?.response?.data;
 
-    return data;
+      console.log('🚀 ~ functresend ~ error:', error);
+      notifications.show({
+        id: 'verify-error',
+        withCloseButton: true,
+        autoClose: 2000,
+        title: <Text className="font-bold text-lg">Oops!</Text>,
+        message: <Text className="text-base">{error.message}</Text>,
+        color: 'red',
+        icon: <XCircle size={50} />,
+        loading: false,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -94,9 +128,9 @@ function VerifyEmail() {
   }, [seconds]);
 
   const resendOTP = () => {
-    functresend();
     setMinutes(0);
     setSeconds(9);
+    functresend();
   };
   return (
     <div className="w-full ">
@@ -141,7 +175,7 @@ function VerifyEmail() {
             </div>
 
             <div>
-              {seconds > 0 || minutes > 0 ? (
+              {loading && (seconds > 0 || minutes > 0) ? (
                 <p>
                   Time Remaining: {minutes < 10 ? `0${minutes}` : minutes}:
                   {seconds < 10 ? `0${seconds}` : seconds}
@@ -157,7 +191,7 @@ function VerifyEmail() {
                 }}
                 onClick={resendOTP}
               >
-                Resend OTP
+                <span> Resend OTP</span>
               </button>
             </div>
 
