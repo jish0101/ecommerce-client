@@ -64,8 +64,8 @@ const ProductPage = () => {
     <section className="w-full">
       <div className="mx-4 pt-2">
         <Breadcrumbs separator=">" separatorMargin="xs">
-          {breadCrumData.map(({ title, to }) => (
-            <Link key={title} className="text-gray-500 text-sm capitalize" to={to}>
+          {breadCrumData.map(({ title, to }, i) => (
+            <Link key={i} className="text-gray-500 text-sm capitalize" to={to}>
               {title}
             </Link>
           ))}
