@@ -60,9 +60,8 @@ const SearchPage = () => {
             onChange={setIsPage}
             color="#000000"
             classNames={{
-              root: 'border rounded-md shadow',
-              control:
-                'hover:bg-white rounded-none text-black data-[active=true]:border border-0 p-6',
+              control: 'p-4',
+              root: 'border p-3 rounded-md shadow',
               dots: 'text-gray-400',
             }}
           />

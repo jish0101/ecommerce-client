@@ -4,105 +4,30 @@ import {
   selectAllStatus,
   selectCartItems,
   selectCartItemsCount,
+  selectSelectedItemCount,
   selectTotalAmount,
 } from '../../Store/reducers/cartReducer/cart.selector';
 import {
   addToCart,
   removeFromCart,
-  removeSelectedProducts,
   selectAllItems,
   updateSelectProduct,
 } from '../../Store/reducers/cartReducer/cartReducer';
-import useRazorpay from 'react-razorpay';
-import { formatNumber } from '../../Lib/Utils';
 import { useNavigate } from 'react-router-dom';
-import useAxiosPrivate from '../../Hooks/useAxiosPrivate';
 import { Button, Checkbox, Image, NumberFormatter, Select, Stack } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
-import { selectUser } from '../../Store/reducers/Auth/authSelector';
-import { BASE_URL } from '../../Lib/GlobalExports';
 
 const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const axios = useAxiosPrivate();
   const cartItems = useSelector(selectCartItems);
-  const user = useSelector(selectUser);
   const itemsTotal = useSelector(selectTotalAmount);
   const selectAllValue = useSelector(selectAllStatus);
   const cartItemsCount = useSelector(selectCartItemsCount);
-  const [Razorpay] = useRazorpay();
-
-  const getKey = async () => {
-    try {
-      // get backend key
-      const { status, data } = await axios.get('payment/getKey');
-      if (status) {
-        return data;
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const createOrder = async () => {
-    try {
-      const { data } = await axios.post('orders', {
-        products: cartItems.map(({ item, quantity, selected }) => {
-          if (selected) {
-            return {
-              _id: item._id,
-              unit: quantity,
-            };
-          }
-        }),
-      });
-      return data?.data?.order;
-    } catch (error) {
-      console.log(err);
-    }
-  };
-
-  const handlePayment = async () => {
-    const key = await getKey();
-    const order = await createOrder();
-
-    if (order) {
-      dispatch(removeSelectedProducts());
-    }
-
-    const options = {
-      key,
-      amount: order.amount,
-      currency: 'USD',
-      name: user.name,
-      image: user.profile,
-      order_id: order.orderId,
-      callback_url: `${BASE_URL}payment/paymentverification`,
-      prefill: {
-        name: user.name,
-        email: user.email,
-      },
-      notes: {
-        address: 'Razorpay Corporate Office',
-      },
-      theme: {
-        color: '#000000',
-      },
-    };
-
-    const rzp1 = new Razorpay(options);
-
-    rzp1.on('payment.failed', function (response) {
-      console.log('🚀 ~ response:', response);
-    });
-
-    rzp1.open();
-  };
+  const cartSelectedItemsCount = useSelector(selectSelectedItemCount);
 
   const payNowHandler = async () => {
     try {
-      await handlePayment();
+      navigate('/checkout');
     } catch (error) {
       console.log(error);
     }
@@ -154,7 +79,7 @@ const Cart = () => {
           </div>
           <div className="grid md:gap-4 gap-2">
             {cartItems
-              ? cartItems.map(({ item, quantity, selected }) => {
+              ? cartItems.map(({ item, quantity }) => {
                   return (
                     <div
                       key={item?._id}
@@ -166,7 +91,7 @@ const Cart = () => {
                             onChange={(event) =>
                               toggleProductSelect(event.currentTarget.checked, item)
                             }
-                            checked={selected}
+                            checked={item.selected}
                           />
                           <div className="w-[150px] rounded-md overflow-hidden">
                             <Image
@@ -208,11 +133,20 @@ const Cart = () => {
                           </div>
                         </Stack>
                       </div>
-                      <div>
+                      <div className="flex items-center gap-2">
+                        <p className="text-slate-700">
+                          {quantity} X{' '}
+                          <NumberFormatter
+                            prefix={`${item?.currency?.symbol} `}
+                            value={item.price}
+                            thousandSeparator
+                          />{' '}
+                          ={' '}
+                        </p>
                         <p className="text-lg font-semibold">
                           <NumberFormatter
-                            prefix={`${item?.currency?.code} `}
-                            value={item.price}
+                            prefix={`${item?.currency?.symbol} `}
+                            value={item.price * quantity}
                             thousandSeparator
                           />
                         </p>
@@ -225,9 +159,11 @@ const Cart = () => {
               {cartItemsCount > 0 ? (
                 <div className="flex flex-col gap-3">
                   <div className="flex gap-2">
-                    <p className="md:text-2xl text-lg">Subtotal ({cartItemsCount} items):</p>
+                    <p className="md:text-2xl text-lg">
+                      Subtotal ({cartSelectedItemsCount} items):
+                    </p>
                     <p className="font-semibold md:text-2xl text-lg">
-                      USD {formatNumber(itemsTotal)}
+                      <NumberFormatter prefix={`$`} value={itemsTotal} thousandSeparator />
                     </p>
                   </div>
                   <Button
@@ -238,7 +174,7 @@ const Cart = () => {
                     className="ml-auto"
                     color="primaryColor"
                   >
-                    Pay Now
+                    Checkout
                   </Button>
                 </div>
               ) : (

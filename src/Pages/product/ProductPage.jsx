@@ -6,15 +6,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectSelectedCategory } from '../../Store/reducers/SelectedCategory/selectedCategory.selector';
 import { Breadcrumbs, Image, Select } from '@mantine/core';
 import { formatNumber } from '../../Lib/Utils';
-import { MapPin } from 'lucide-react';
-import { addToCart } from '../../Store/reducers/cartReducer/cartReducer';
+import { Check, MapPin } from 'lucide-react';
+import { addToCart, removeFromCart } from '../../Store/reducers/cartReducer/cartReducer';
+import { notifications } from '@mantine/notifications';
+import { selectCartItems } from '../../Store/reducers/cartReducer/cart.selector';
 
 const ProductPage = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const axios = useAxiosPrivate();
   const selectedCategory = useSelector(selectSelectedCategory);
+  const cartItems = useSelector(selectCartItems);
   const [selectedQuantity, setSelectedQuantity] = useState({ label: `Quantity: 1`, value: `1` });
   const { data: productData, isFetching: isLoading } = useQuery({
     queryKey: [id],
@@ -47,6 +50,10 @@ const ProductPage = () => {
     value: `${i + 1}`,
   }));
 
+  const isInCart = () => {
+    return cartItems.find(({ item }) => item._id === id) !== undefined;
+  };
+
   const addToCartHandler = () => {
     if (selectedQuantity && selectedQuantity?.value) {
       const payload = {
@@ -54,11 +61,39 @@ const ProductPage = () => {
         quantity: selectedQuantity?.value,
       };
       dispatch(addToCart(payload));
-      navigate('/cart');
+      notifications.show({
+        id: 'addedToCart',
+        withCloseButton: true,
+        autoClose: 2000,
+        title: <h4 className="font-bold text-lg capitalize">{productData.name}</h4>,
+        message: <p className="text-base">Added item to cart!</p>,
+        color: 'yellow',
+        icon: <Check size={40} className="p-1" key={'addedToCart'} />,
+        loading: false,
+      });
     }
   };
 
-  // console.log('productData', productData, quantityOptions);
+  const removeFromCartHandler = () => {
+    if (selectedQuantity && selectedQuantity?.value) {
+      const payload = {
+        item: productData,
+      };
+      dispatch(removeFromCart(payload));
+      notifications.show({
+        id: 'removeFromCart',
+        withCloseButton: true,
+        autoClose: 2000,
+        title: <h4 className="font-bold text-lg capitalize">{productData.name}</h4>,
+        message: <p className="text-base">Removed from the cart!</p>,
+        color: 'yellow',
+        icon: <Check size={40} className="p-1" key={'removeFromCart'} />,
+        loading: false,
+      });
+    }
+  };
+
+  const buyNowHandler = () => navigate('/checkout');
 
   return (
     <section className="w-full">
@@ -115,13 +150,16 @@ const ProductPage = () => {
           </div>
           <div className="my-2 flex flex-col gap-3">
             <button
-              onClick={addToCartHandler}
+              onClick={isInCart() === true ? removeFromCartHandler : addToCartHandler}
               disabled={!selectedQuantity}
               className="w-full bg-amazon_yellow_dark rounded-full disabled:cursor-not-allowed disabled:opacity-80 hover:opacity-90 p-1"
             >
-              Add to cart
+              {isInCart() ? 'Remove from cart' : 'Add to cart'}
             </button>
-            <button className="w-full bg-orange_100 rounded-full hover:opacity-90 p-1">
+            <button
+              onClick={buyNowHandler}
+              className="w-full bg-orange_100 rounded-full hover:opacity-90 p-1"
+            >
               Buy now
             </button>
           </div>

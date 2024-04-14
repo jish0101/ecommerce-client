@@ -68,6 +68,7 @@ function SignIn() {
         title: <h4 className="font-bold text-lg">Oops!</h4>,
         message: <p className="text-base">{error?.message}</p>,
         color: 'red',
+        radius: 'lg',
         icon: <XCircle size={50} key={'login'} />,
         loading: false,
       });

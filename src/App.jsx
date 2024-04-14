@@ -17,6 +17,7 @@ const Orders = lazy(() => import('./Components/Orders/Orders'));
 const Account = lazy(() => import('./Components/Account/Account'));
 const AccountProfile = lazy(() => import('./Components/Account/AccountProfile'));
 const VerifyEmail = lazy(() => import('./Components/Signup/VerifyEmail.jsx'));
+const CheckoutPage = lazy(() => import('./Pages/checkout/CheckoutPage.jsx'));
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
           <Route path="/user-profile" element={<AccountProfile />} />
           <Route path="/search-page/:id" element={<SearchPage />} />
           <Route path="/search-page" element={<SearchPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/product-page/:id" element={<ProductPage />} />
         </Route>
       </Route>
