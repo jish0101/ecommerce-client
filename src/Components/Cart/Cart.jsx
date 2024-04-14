@@ -4,17 +4,17 @@ import {
   selectAllStatus,
   selectCartItems,
   selectCartItemsCount,
+  selectSelectedItemCount,
   selectTotalAmount,
 } from '../../Store/reducers/cartReducer/cart.selector';
-import { Checkbox, Image, NumberFormatter, Select, Stack } from '@mantine/core';
 import {
   addToCart,
   removeFromCart,
   selectAllItems,
   updateSelectProduct,
 } from '../../Store/reducers/cartReducer/cartReducer';
-import { formatNumber } from '../../Lib/Utils';
 import { useNavigate } from 'react-router-dom';
+import { Button, Checkbox, Image, NumberFormatter, Select, Stack } from '@mantine/core';
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -23,6 +23,15 @@ const Cart = () => {
   const itemsTotal = useSelector(selectTotalAmount);
   const selectAllValue = useSelector(selectAllStatus);
   const cartItemsCount = useSelector(selectCartItemsCount);
+  const cartSelectedItemsCount = useSelector(selectSelectedItemCount);
+
+  const payNowHandler = async () => {
+    try {
+      navigate('/checkout');
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const productItemCountHandler = (item, opt) => {
     if (opt) {
@@ -70,7 +79,7 @@ const Cart = () => {
           </div>
           <div className="grid md:gap-4 gap-2">
             {cartItems
-              ? cartItems.map(({ item, quantity, selected }) => {
+              ? cartItems.map(({ item, quantity }) => {
                   return (
                     <div
                       key={item?._id}
@@ -82,7 +91,7 @@ const Cart = () => {
                             onChange={(event) =>
                               toggleProductSelect(event.currentTarget.checked, item)
                             }
-                            checked={selected}
+                            checked={item.selected}
                           />
                           <div className="w-[150px] rounded-md overflow-hidden">
                             <Image
@@ -124,11 +133,20 @@ const Cart = () => {
                           </div>
                         </Stack>
                       </div>
-                      <div>
+                      <div className="flex items-center gap-2">
+                        <p className="text-slate-700">
+                          {quantity} X{' '}
+                          <NumberFormatter
+                            prefix={`${item?.currency?.symbol} `}
+                            value={item.price}
+                            thousandSeparator
+                          />{' '}
+                          ={' '}
+                        </p>
                         <p className="text-lg font-semibold">
                           <NumberFormatter
-                            prefix={`${item?.currency?.code} `}
-                            value={item.price}
+                            prefix={`${item?.currency?.symbol} `}
+                            value={item.price * quantity}
                             thousandSeparator
                           />
                         </p>
@@ -139,19 +157,33 @@ const Cart = () => {
               : null}
             <div className="flex justify-end items-end gap-2">
               {cartItemsCount > 0 ? (
-                <>
-                  <p className="md:text-2xl text-lg">Subtotal ({cartItemsCount} items):</p>
-                  <p className="font-semibold md:text-2xl text-lg">
-                    USD {formatNumber(itemsTotal)}
-                  </p>
-                </>
+                <div className="flex flex-col gap-3">
+                  <div className="flex gap-2">
+                    <p className="md:text-2xl text-lg">
+                      Subtotal ({cartSelectedItemsCount} items):
+                    </p>
+                    <p className="font-semibold md:text-2xl text-lg">
+                      <NumberFormatter prefix={`$`} value={itemsTotal} thousandSeparator />
+                    </p>
+                  </div>
+                  <Button
+                    onClick={payNowHandler}
+                    my={10}
+                    w={150}
+                    size="md"
+                    className="ml-auto"
+                    color="primaryColor"
+                  >
+                    Checkout
+                  </Button>
+                </div>
               ) : (
                 <p className="text-2xl">No items selected</p>
               )}
             </div>
           </div>
         </div>
-        <div className="md:p-4 p-2">Items selected</div>
+        {/* <div className="md:p-4 p-2">Items selected</div> */}
       </div>
     </section>
   );

@@ -13,19 +13,20 @@ const cartReducer = createSlice({
       const payload = action.payload;
       const quantity = payload.quantity;
       const item = payload.item;
-      if (state.cartItems) {
+
+      if (state.cartItems.length) {
         const existingItem = state.cartItems.findIndex(({ item: f }) => f._id === item._id);
         if (existingItem !== -1) {
           state.cartItems[existingItem].quantity = quantity;
         } else {
           state.cartItems.push({
-            item,
+            item: { ...item, selected: true },
             quantity,
           });
         }
       } else {
         state.cartItems.push({
-          _id: item,
+          item: { ...item, selected: true },
           quantity,
         });
       }
@@ -47,7 +48,7 @@ const cartReducer = createSlice({
     selectAllItems: (state, action) => {
       const payload = action.payload;
 
-      state.cartItems.forEach((item) => {
+      state.cartItems.forEach(({ item }) => {
         item.selected = payload;
       });
       state.selectAll = payload;
@@ -58,12 +59,21 @@ const cartReducer = createSlice({
       const foundIndex = state.cartItems.findIndex(({ item }) => item?._id === payload._id);
 
       if (foundIndex !== -1) {
-        state.cartItems[foundIndex].selected = payload.value;
+        state.cartItems[foundIndex].item.selected = payload.value;
       }
+    },
+    removeSelectedProducts: (state) => {
+      return state.cartItems.filter(({ item }) => item.selected === false);
     },
   },
 });
 
-export const { addToCart, removeFromCart, clearCart, selectAllItems, updateSelectProduct } =
-  cartReducer.actions;
+export const {
+  addToCart,
+  removeFromCart,
+  clearCart,
+  selectAllItems,
+  updateSelectProduct,
+  removeSelectedProducts,
+} = cartReducer.actions;
 export default cartReducer.reducer;

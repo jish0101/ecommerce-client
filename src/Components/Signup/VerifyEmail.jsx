@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { logoDark } from '../../Assets';
 import { Loader, PinInput, Text } from '@mantine/core';
 import { API_URL, api } from '../../Api/api';
-import useAxiosPrivate from '../../Hooks/useAxiosPrivate';
 import { notifications } from '@mantine/notifications';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Check, XCircle } from 'lucide-react';

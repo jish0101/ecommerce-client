@@ -33,8 +33,8 @@ function SignIn() {
 
   async function loginApi({ body }) {
     try {
-      const response = await api.post(API_URL.login, body);
-      return response;
+      const { data } = await api.post(API_URL.login, body);
+      return data;
     } catch (error) {
       console.log(error);
     }
@@ -42,8 +42,7 @@ function SignIn() {
 
   const formSubmit = async (body) => {
     try {
-      const res = await login({ body });
-      const { status, message, data } = res.data;
+      const { status, message, data } = await login({ body });
 
       if (status) {
         notifications.show({
@@ -69,6 +68,7 @@ function SignIn() {
         title: <h4 className="font-bold text-lg">Oops!</h4>,
         message: <p className="text-base">{error?.message}</p>,
         color: 'red',
+        radius: 'lg',
         icon: <XCircle size={50} key={'login'} />,
         loading: false,
       });
