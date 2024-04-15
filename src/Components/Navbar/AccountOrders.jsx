@@ -5,18 +5,22 @@ import { Check, ChevronDown, XCircle } from 'lucide-react';
 import { BASE_URL } from '../../Lib/GlobalExports';
 import { Link } from 'react-router-dom';
 import { logout } from '../../Store/reducers/Auth/authSlice';
-import { API_KEYS, API_URL, usePostFetch } from '../../Api/api';
+import { API_KEYS, API_URL, api } from '../../Api/api';
 import { notifications } from '@mantine/notifications';
 import { useEffect } from 'react';
 import { startLoading, endLoading } from '../../Store/reducers/globalLoader/loaderSlice';
+import { useMutation } from '@tanstack/react-query';
 
 const AccountOrders = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
-  const { mutateAsync: logoutApi, isPending: isLoadingLogout } = usePostFetch({
-    queryKey: API_KEYS.logout,
-    url: API_URL.logout,
+  const { mutateAsync: logoutApi, isPending: isLoadingLogout } = useMutation({
+    mutationFn: async () => {
+      const response = await api.post(API_URL.logout);
+      return response;
+    },
+    mutationKey: API_KEYS.logout,
   });
 
   const getName = () => {

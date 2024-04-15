@@ -4,12 +4,16 @@ import { BASE_URL } from '../Lib/GlobalExports';
 
 export const api = axios.create({
   baseURL: BASE_URL,
+  headers: { 'Content-Type': 'application/json' },
 });
 
 export const axiosPrivate = axios.create({
   baseURL: BASE_URL,
-  withCredentials: true,
+  headers: { 'Content-Type': 'application/json' },
 });
+
+api.defaults.withCredentials = true;
+axiosPrivate.defaults.withCredentials = true;
 
 export const API_URL = {
   login: 'auth/login',
