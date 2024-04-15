@@ -14,22 +14,15 @@ const cartReducer = createSlice({
       const quantity = payload.quantity;
       const item = payload.item;
 
-      if (state.cartItems.length) {
-        const existingItem = state.cartItems.findIndex(({ item: f }) => f._id === item._id);
-        if (existingItem !== -1) {
-          state.cartItems[existingItem].quantity = quantity;
-        } else {
-          state.cartItems.push({
-            item: { ...item, selected: true },
-            quantity,
-          });
-        }
-      } else {
+      const existingItem = state.cartItems.findIndex(({ item: f }) => f._id === item._id);
+      if (existingItem === -1) {
         state.cartItems.push({
           item: { ...item, selected: true },
           quantity,
         });
+        return;
       }
+      state.cartItems[existingItem].quantity = quantity;
     },
     removeFromCart: (state, action) => {
       const payload = action.payload;
@@ -63,7 +56,10 @@ const cartReducer = createSlice({
       }
     },
     removeSelectedProducts: (state) => {
-      return state.cartItems.filter(({ item }) => item.selected === false);
+      // const filteredProducts = state.cartItems.filter(({ item }) => item.selected === false);
+      // console.log('🚀 ~ filteredProducts:', filteredProducts);
+      // return (state.cartItems = filteredProducts);
+      state.cartItems = state.cartItems.filter(({ item }) => item.selected === false);
     },
   },
 });

@@ -93,7 +93,10 @@ const ProductPage = () => {
     }
   };
 
-  const buyNowHandler = () => navigate('/checkout');
+  const buyNowHandler = () => {
+    addToCartHandler();
+    return navigate('/checkout');
+  };
 
   return (
     <section className="w-full">
