@@ -6,11 +6,13 @@ import { notifications } from '@mantine/notifications';
 import { logoDark } from '../../Assets/index';
 import { selectIsAuth } from '../../Store/reducers/Auth/authSelector';
 import { useDispatch, useSelector } from 'react-redux';
-import { API_KEYS, API_URL, api } from '../../Api/api';
+import { API_KEYS, API_URL } from '../../Api/api';
 import { signin } from '../../Store/reducers/Auth/authSlice';
 import { Check, XCircle } from 'lucide-react';
 import '@mantine/notifications/styles.css';
 import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
+import { BASE_URL } from '../../Lib/GlobalExports';
 
 function SignIn() {
   const location = useLocation();
@@ -33,7 +35,9 @@ function SignIn() {
 
   async function loginApi({ body }) {
     try {
-      const { data } = await api.post(API_URL.login, body);
+      const { data } = await axios.post(`${BASE_URL}${API_URL.login}`, body, {
+        withCredentials: false,
+      });
       return data;
     } catch (error) {
       console.log(error);

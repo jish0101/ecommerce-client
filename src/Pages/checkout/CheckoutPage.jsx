@@ -31,6 +31,17 @@ const CheckoutPage = () => {
         return data;
       }
     } catch (err) {
+      notifications.show({
+        id: 'failedtocreateorder',
+        withCloseButton: true,
+        autoClose: 2000,
+        title: <h4 className="font-bold text-lg">Server Error</h4>,
+        message: <p className="text-base">Failed to create order!</p>,
+        color: 'red',
+        radius: 'lg',
+        icon: <XCircle size={50} key={'failedtocreateorder'} />,
+        loading: false,
+      });
       console.log(err);
     }
   };
@@ -49,6 +60,17 @@ const CheckoutPage = () => {
       });
       return data?.data?.order;
     } catch (error) {
+      notifications.show({
+        id: 'failedtocreateorder',
+        withCloseButton: true,
+        autoClose: 2000,
+        title: <h4 className="font-bold text-lg">Server Error</h4>,
+        message: <p className="text-base">Failed to create order!</p>,
+        color: 'red',
+        radius: 'lg',
+        icon: <XCircle size={50} key={'failedtocreateorder'} />,
+        loading: false,
+      });
       console.log(error);
     }
   };
@@ -59,10 +81,6 @@ const CheckoutPage = () => {
       const order = await createOrder();
       const key = await getKey();
       dispatch(endLoading());
-
-      if (order) {
-        dispatch(removeSelectedProducts());
-      }
 
       const options = {
         key,
@@ -100,7 +118,7 @@ const CheckoutPage = () => {
         });
       });
 
-      rzp1.open();
+      return rzp1.open();
     }
 
     return notifications.show({
