@@ -12,7 +12,6 @@ import {
 } from '../../Store/reducers/cartReducer/cart.selector';
 import { Button, NumberFormatter } from '@mantine/core';
 import { endLoading, startLoading } from '../../Store/reducers/globalLoader/loaderSlice';
-import { removeSelectedProducts } from '../../Store/reducers/cartReducer/cartReducer';
 import { XCircle } from 'lucide-react';
 
 const CheckoutPage = () => {
@@ -49,14 +48,14 @@ const CheckoutPage = () => {
   const createOrder = async () => {
     try {
       const { data } = await axios.post('orders', {
-        products: cartItems.map(({ item, quantity }) => {
-          if (item.selected) {
+        products: cartItems
+          .filter(({ item }) => item.selected)
+          .map(({ item, quantity }) => {
             return {
               _id: item._id,
               unit: quantity,
             };
-          }
-        }),
+          }),
       });
       return data?.data?.order;
     } catch (error) {

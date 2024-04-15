@@ -56,9 +56,6 @@ const cartReducer = createSlice({
       }
     },
     removeSelectedProducts: (state) => {
-      // const filteredProducts = state.cartItems.filter(({ item }) => item.selected === false);
-      // console.log('🚀 ~ filteredProducts:', filteredProducts);
-      // return (state.cartItems = filteredProducts);
       state.cartItems = state.cartItems.filter(({ item }) => item.selected === false);
     },
   },
