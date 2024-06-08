@@ -10,6 +10,7 @@ const useProducts = ({ filters, isPage }) => {
   const api = useAxiosPrivate();
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
+
   const { data, isFetching, error, refetch } = useQuery({
     queryKey: [API_KEYS.products],
     queryFn: getProductCategories,

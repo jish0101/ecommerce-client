@@ -64,8 +64,14 @@ function VerifyEmail() {
       setLoading(false);
     }
   };
-  const functresend = async () => {
-    const { data } = await api.post(API_URL.resendOtp, {
+
+  const functresend = async (type) => {
+    let url = `${API_URL.resendOtp}`;
+
+    if (type) {
+      url = `${API_URL.resendOtp}?type=${type}`;
+    }
+    const { data } = await api.post(url, {
       email: `${email}`,
     });
 
@@ -92,7 +98,7 @@ function VerifyEmail() {
   }, [seconds]);
 
   const resendOTP = () => {
-    functresend();
+    functresend('resend-otp');
     setMinutes(0);
     setSeconds(9);
   };

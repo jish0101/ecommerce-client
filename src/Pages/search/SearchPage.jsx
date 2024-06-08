@@ -24,11 +24,11 @@ const SearchPage = () => {
 
   useEffect(() => {
     refetchProducts();
-  }, [isPage, filters, id]);
+  }, [isPage, filters]);
 
-  useEffect(() => {
-    setIsPage(1);
-  }, [filters?.categoryId]);
+  // useEffect(() => {
+  //   setIsPage(1);
+  // }, [filters?.categoryId]);
 
   useEffect(() => {
     setFilters({

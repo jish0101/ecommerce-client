@@ -112,7 +112,8 @@ const AppLayout = ({ children }) => {
 
   return (
     <AppShell
-      header={{ height: 95 }}
+      header={{ height: 100 }}
+      className="bg-amazon_light"
       navbar={{
         width: 350,
         breakpoint: 'sm',
@@ -145,8 +146,8 @@ const AppLayout = ({ children }) => {
             <h3 className="font-semibold text-lg">Hello, {user?.name}</h3>
           </Link>
         </AppShell.Section>
-        <AppShell.Section grow={false} component={ScrollArea}>
-          <div>
+        <AppShell.Section component={ScrollArea}>
+          <Box grow={false} className="h-screen">
             <ul>
               {cols.map((col) => {
                 return (
@@ -172,17 +173,12 @@ const AppLayout = ({ children }) => {
                 );
               })}
             </ul>
-          </div>
+          </Box>
         </AppShell.Section>
       </AppShell.Navbar>
       <AppShell.Main>
-        <ScrollArea
-          viewportRef={scrollRef}
-          scrollbarSize={15}
-          h={'calc(100vh - 100px)'}
-          offsetScrollbars
-        >
-          <div className="bg-white border border-white">{children}</div>
+        <ScrollArea viewportRef={scrollRef} scrollbarSize={16} h={'calc(100vh - 100px)'}>
+          <div className="bg-white min-h-[75vh]">{children}</div>
           <div className="bg-amazon_light">
             <Footer scrollTop={scrollTop} />
           </div>

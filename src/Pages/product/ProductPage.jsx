@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosPrivate from '../../Hooks/useAxiosPrivate';
@@ -10,15 +10,17 @@ import { Check, MapPin } from 'lucide-react';
 import { addToCart, removeFromCart } from '../../Store/reducers/cartReducer/cartReducer';
 import { notifications } from '@mantine/notifications';
 import { selectCartItems } from '../../Store/reducers/cartReducer/cart.selector';
+import { endLoading, startLoading } from '../../Store/reducers/globalLoader/loaderSlice';
 
 const ProductPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const axios = useAxiosPrivate();
-  const selectedCategory = useSelector(selectSelectedCategory);
   const cartItems = useSelector(selectCartItems);
+  const selectedCategory = useSelector(selectSelectedCategory);
   const [selectedQuantity, setSelectedQuantity] = useState({ label: `Quantity: 1`, value: `1` });
+
   const { data: productData, isFetching: isLoading } = useQuery({
     queryKey: [id],
     queryFn: fetchProductData,
@@ -97,6 +99,14 @@ const ProductPage = () => {
     addToCartHandler();
     return navigate('/checkout');
   };
+
+  useEffect(() => {
+    if (isLoading) {
+      dispatch(startLoading());
+    } else {
+      dispatch(endLoading());
+    }
+  }, [isLoading]);
 
   return (
     <section className="w-full">

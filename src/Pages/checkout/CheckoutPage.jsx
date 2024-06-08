@@ -84,7 +84,7 @@ const CheckoutPage = () => {
       const options = {
         key,
         amount: order.amount,
-        currency: 'USD',
+        currency: 'INR',
         name: user.name,
         image: user.profile,
         order_id: order.orderId,
@@ -151,7 +151,7 @@ const CheckoutPage = () => {
           <h3 className="font-semibold text-xl">Order Summary</h3>
           <div className="flex justify-between border-b py-2">
             <p>Items: </p>
-            <p>{<NumberFormatter value={totalAmount} thousandSeparator prefix="$" />}</p>
+            <p>{<NumberFormatter value={totalAmount} thousandSeparator prefix="₹" />}</p>
           </div>
           <div className="flex justify-between border-b py-2">
             <p>Shipping & Handling: </p>
@@ -160,7 +160,7 @@ const CheckoutPage = () => {
           <div className="flex justify-between py-2">
             <p className="text-2xl font-semibold text-red-500">Order total:</p>
             <p className="text-xl font-semibold">
-              {<NumberFormatter value={totalAmount} thousandSeparator prefix="$" />}
+              {<NumberFormatter value={totalAmount} thousandSeparator prefix="₹" />}
             </p>
           </div>
           <div className="my-2 px-2">

@@ -163,7 +163,7 @@ const Cart = () => {
                       Subtotal ({cartSelectedItemsCount} items):
                     </p>
                     <p className="font-semibold md:text-2xl text-lg">
-                      <NumberFormatter prefix={`$`} value={itemsTotal} thousandSeparator />
+                      <NumberFormatter prefix={`₹`} value={itemsTotal} thousandSeparator />
                     </p>
                   </div>
                   <Button

@@ -18,6 +18,7 @@ const Account = lazy(() => import('./Components/Account/Account'));
 const AccountProfile = lazy(() => import('./Components/Account/AccountProfile'));
 const VerifyEmail = lazy(() => import('./Components/Signup/VerifyEmail.jsx'));
 const CheckoutPage = lazy(() => import('./Pages/checkout/CheckoutPage.jsx'));
+const Addresses = lazy(() => import('./Pages/addresses/Addresses.jsx'));
 
 function App() {
   return (
@@ -36,13 +37,14 @@ function App() {
         >
           <Route index element={<Home />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/orders" element={<Orders />} />
+          <Route path="/user-account/orders" element={<Orders />} />
           <Route path="/user-account" element={<Account />} />
           <Route path="/user-profile" element={<AccountProfile />} />
           <Route path="/search-page/:id" element={<SearchPage />} />
           <Route path="/search-page" element={<SearchPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/product-page/:id" element={<ProductPage />} />
+          <Route path="/user-account/addresses" element={<Addresses />} />
         </Route>
       </Route>
       <Route element={<SuspenseWrapper />}>

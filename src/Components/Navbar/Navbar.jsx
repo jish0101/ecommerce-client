@@ -18,6 +18,7 @@ const Navbar = () => {
     navigate('/');
     dispatch(setSelectedCategory(null));
   };
+
   return (
     <div className="h-[60%] bg-darkblue-1000 text-white">
       <nav className="flex h-full gap-2 p-1 px-3">
