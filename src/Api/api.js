@@ -13,7 +13,6 @@ export const axiosPrivate = axios.create({
 });
 
 api.defaults.withCredentials = true;
-axiosPrivate.defaults.withCredentials = true;
 
 export const API_URL = {
   login: 'auth/login',

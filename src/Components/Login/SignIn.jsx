@@ -36,7 +36,7 @@ function SignIn() {
   async function loginApi({ body }) {
     try {
       const { data } = await axios.post(`${BASE_URL}${API_URL.login}`, body, {
-        withCredentials: false,
+        withCredentials: true,
       });
       return data;
     } catch (error) {
