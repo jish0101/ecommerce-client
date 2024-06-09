@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Plus } from 'lucide-react';
+import { Check, Plus } from 'lucide-react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import LoaderComponent from '../../Components/Layout/Loader';
 import { Breadcrumbs, Card, Modal, Button } from '@mantine/core';
 import AddressForm from './AddressForm';
 import useAxiosPrivate from '../../Hooks/useAxiosPrivate';
 import { notifications } from '@mantine/notifications';
+import { useDispatch } from 'react-redux';
+import { endLoading, startLoading } from '../../Store/reducers/globalLoader/loaderSlice';
 
 const Addresses = () => {
+  const dispatch = useDispatch();
   const api = useAxiosPrivate();
   const url = useLocation().pathname;
   const [modalData, setModalData] = useState({ status: false, data: null });
@@ -16,16 +19,19 @@ const Addresses = () => {
   const { mutateAsync: deleteAddress, isPending: isDeleting } = useMutation({
     mutationFn: async (id) => {
       try {
-        const { status, message } = await api.delete(`/address/${id}`);
-        console.log('🚀 ~ mutationFn: ~ status, message:', status, message);
+        const { status, data } = await api.delete(`/address/${id}`);
+
+        if (status === 200) {
+          return data;
+        }
       } catch (error) {
         return error;
       }
     },
   });
 
-  const { data, isFetching, isLoading } = useQuery({
-    queryKey: 'address',
+  const { data, isFetching, isLoading, refetch } = useQuery({
+    queryKey: ['address'],
     queryFn: async () => {
       const { data, status } = await api.get('/address');
       if (status === 200) {
@@ -37,8 +43,23 @@ const Addresses = () => {
 
   const handleDelete = async (id) => {
     try {
-      const res = await deleteAddress(id);
-      console.log('🚀 ~ handleDelete ~ res:', res);
+      const { status, message } = await deleteAddress(id);
+
+      if (status) {
+        return notifications.show({
+          title: (
+            <div className="flex items-center gap-2">
+              <Check size={20} /> Success
+            </div>
+          ),
+          message,
+        });
+      }
+
+      notifications.show({
+        title: 'Failed',
+        message,
+      });
     } catch (error) {
       notifications.show({
         title: 'Error',
@@ -46,6 +67,20 @@ const Addresses = () => {
       });
     }
   };
+
+  const handleEdit = async (row) => {
+    console.log('🚀 ~ handleEdit ~ row:', row);
+    setModalData({ status: true, data: row });
+  };
+
+  useEffect(() => {
+    if (isDeleting) {
+      dispatch(startLoading());
+    } else {
+      refetch();
+      dispatch(endLoading());
+    }
+  }, [isDeleting]);
 
   if (isFetching || isLoading) {
     return (
@@ -110,7 +145,10 @@ const Addresses = () => {
                       </div>
                       <Card.Section>
                         <div className="flex items-center gap-2 p-3">
-                          <Button variant="transparent">Edit</Button>|
+                          <Button onClick={() => handleEdit(add)} variant="transparent">
+                            Edit
+                          </Button>
+                          |
                           <Button onClick={() => handleDelete(add._id)} variant="transparent">
                             Remove
                           </Button>
@@ -130,7 +168,11 @@ const Addresses = () => {
         title={modalData.data ? 'Update your address' : 'Add a new address'}
         onClose={() => setModalData({ status: false, data: null })}
       >
-        <AddressForm onClose={() => setModalData({ status: false, data: null })} />
+        <AddressForm
+          data={modalData.data}
+          refetch={refetch}
+          onClose={() => setModalData({ status: false, data: null })}
+        />
       </Modal>
     </section>
   );

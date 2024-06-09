@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as Yup from 'yup';
 import { Check, XCircle } from 'lucide-react';
 import { Button, Flex, Input } from '@mantine/core';
@@ -27,7 +27,7 @@ const createSchema = Yup.object().shape({
   code: Yup.string().required('This is required*'),
 });
 
-const AddressForm = ({ onClose }) => {
+const AddressForm = ({ data, refetch, onClose }) => {
   const axios = useAxiosPrivate();
   const { mutateAsync: handleCreateAddress, isPending } = useMutation({
     mutationFn: createAddress,
@@ -36,6 +36,7 @@ const AddressForm = ({ onClose }) => {
 
   const {
     register,
+    reset,
     handleSubmit,
     control,
     watch,
@@ -68,6 +69,7 @@ const AddressForm = ({ onClose }) => {
 
       const { status, message } = await handleCreateAddress({ body });
       if (status) {
+        refetch();
         notifications.show({
           id: 'address',
           withCloseButton: true,
@@ -99,6 +101,13 @@ const AddressForm = ({ onClose }) => {
   };
 
   const selectedCountry = watch('country');
+
+  useEffect(() => {
+    if (data) {
+      const { _id, userId, __v, isPrimary, ...rest } = data;
+      reset(rest);
+    }
+  }, [data]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
