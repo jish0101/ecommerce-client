@@ -14,6 +14,7 @@ const Addresses = () => {
   const dispatch = useDispatch();
   const api = useAxiosPrivate();
   const url = useLocation().pathname;
+  const [confirmation, setConfirmation] = useState({ status: false, data: null });
   const [modalData, setModalData] = useState({ status: false, data: null });
 
   const { mutateAsync: deleteAddress, isPending: isDeleting } = useMutation({
@@ -41,6 +42,24 @@ const Addresses = () => {
     },
   });
 
+  const handleSetPrimary = async (id) => {
+    try {
+      const { data, status } = await api.put('/address', { _id: id, isPrimary: true });
+      if (status === 200) {
+        refetch();
+        notifications.show({
+          title: 'Success',
+          message: data?.message,
+        });
+      }
+    } catch (error) {
+      notifications.show({
+        title: 'Error',
+        message: error.message,
+      });
+    }
+  };
+
   const handleDelete = async (id) => {
     try {
       const { status, message } = await deleteAddress(id);
@@ -65,11 +84,12 @@ const Addresses = () => {
         title: 'Error',
         message: 'Server error',
       });
+    } finally {
+      setConfirmation({ status: false, data: null });
     }
   };
 
   const handleEdit = async (row) => {
-    console.log('🚀 ~ handleEdit ~ row:', row);
     setModalData({ status: true, data: row });
   };
 
@@ -144,14 +164,34 @@ const Addresses = () => {
                         </div>
                       </div>
                       <Card.Section>
-                        <div className="flex items-center gap-2 p-3">
-                          <Button onClick={() => handleEdit(add)} variant="transparent">
+                        <div className="flex items-center p-3">
+                          <Button
+                            size="compact-sm"
+                            onClick={() => handleEdit(add)}
+                            variant="transparent"
+                          >
                             Edit
                           </Button>
                           |
-                          <Button onClick={() => handleDelete(add._id)} variant="transparent">
+                          <Button
+                            size="compact-sm"
+                            onClick={() => setConfirmation({ status: true, data: add._id })}
+                            variant="transparent"
+                          >
                             Remove
                           </Button>
+                          {!add.isPrimary && (
+                            <>
+                              |
+                              <Button
+                                size="compact-sm"
+                                onClick={() => handleSetPrimary(add._id)}
+                                variant="transparent"
+                              >
+                                Set as primary
+                              </Button>
+                            </>
+                          )}
                         </div>
                       </Card.Section>
                     </div>
@@ -161,6 +201,23 @@ const Addresses = () => {
             : ''}
         </div>
       </div>
+
+      <Modal
+        opened={confirmation.status}
+        centered
+        title="Confirmation"
+        onClose={() => setConfirmation({ status: false, data: null })}
+      >
+        <h2 className="text-2xl font-medium">Are you sure ?</h2>
+        <div className="flex justify-end gap-2">
+          <Button color="red" onClick={() => handleDelete(confirmation.data)}>
+            Delete
+          </Button>
+          <Button color="gray" onClick={() => setConfirmation({ status: false, data: null })}>
+            Cancel
+          </Button>
+        </div>
+      </Modal>
 
       <Modal
         opened={modalData.status}

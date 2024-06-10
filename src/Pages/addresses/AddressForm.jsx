@@ -29,8 +29,8 @@ const createSchema = Yup.object().shape({
 
 const AddressForm = ({ data, refetch, onClose }) => {
   const axios = useAxiosPrivate();
-  const { mutateAsync: handleCreateAddress, isPending } = useMutation({
-    mutationFn: createAddress,
+  const { mutateAsync: handleAddress, isPending } = useMutation({
+    mutationFn: data ? updateAddress : createAddress,
     mutationKey: ['address'],
   });
 
@@ -63,11 +63,21 @@ const AddressForm = ({ data, refetch, onClose }) => {
     }
   }
 
+  async function updateAddress({ body }) {
+    try {
+      const { data: someData, status } = await axios.put('/address', { ...body, _id: data._id });
+      if (status === 200) {
+        return someData;
+      }
+    } catch (error) {
+      return error;
+    }
+  }
+
   const onSubmit = async (body) => {
     try {
       if (isPending) return;
-
-      const { status, message } = await handleCreateAddress({ body });
+      const { status, message } = await handleAddress({ body });
       if (status) {
         refetch();
         notifications.show({
